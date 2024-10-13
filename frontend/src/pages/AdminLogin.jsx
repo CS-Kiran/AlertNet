@@ -1,42 +1,35 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Assuming you are using React Router
+import { Link } from "react-router-dom";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-  
+
     try {
       const response = await axios.post(
-        "http://localhost:8080/admin/login",
+        "http://localhost:8080/api/admin/login",
         {
           username,
           password,
         },
         {
           headers: {
-            "Content-Type": "application/json", // Ensure request is JSON
-            "Authorization": "Bearer your-token", // Optional: Include any token if required
+            "Content-Type": "application/json",
           },
         }
       );
       console.log("Response data:", response.data);
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
-      setError("Invalid username or password");
     }
   };
-  
 
   return (
     <div className="relative h-screen flex flex-col items-center justify-center bg-gray-50">
-
       {/* Heading */}
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Admin Login</h1>
 
@@ -80,9 +73,6 @@ const AdminLogin = () => {
               required
             />
           </div>
-
-          {/* Error message */}
-          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           {/* Submit Button */}
           <button
