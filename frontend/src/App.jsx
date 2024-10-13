@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { AlertProvider } from "./context/AlertContext";
 import HomePage from "./pages/HomePage";
 import LearnMore from "./components/LearnMore";
 import SignIn from "./pages/SignIn";
@@ -9,14 +10,16 @@ import AdminLogin from "./pages/AdminLogin";
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/admin_login" element={<AdminLogin />} />
-        <Route path="/login" element={<SignIn />} />
-        <Route path="/register_citizen" element={<CitizenRegistration />} />
-        <Route path="/register_police" element={<PoliceRegistration />} />
-        <Route path="/learn-more" element={<LearnMore />} />
-      </Routes>
+      <AlertProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/admin_login" element={<AdminLogin />} />
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/register_citizen" element={<CitizenRegistration />} />
+          <Route path="/register_police" element={<PoliceRegistration />} />
+          <Route path="/learn-more" element={<LearnMore />} />
+        </Routes>
+      </AlertProvider>
     </>
   );
 }

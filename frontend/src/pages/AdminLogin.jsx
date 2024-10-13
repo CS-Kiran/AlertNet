@@ -1,10 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import { useAlert } from "../context/AlertContext";
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { showAlert } = useAlert();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,9 +23,21 @@ const AdminLogin = () => {
           },
         }
       );
-      console.log("Response data:", response.data);
+      if (response.status === 200 && response.data.success) {
+        showAlert("success", "Login successful!");
+      } else {
+        showAlert(
+          "error",
+          response.data.message ||
+            "Login failed. Please check your credentials."
+        );
+      }
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
+      showAlert(
+        "error",
+        err.response?.data?.message || "Login failed. Please try again."
+      );
     }
   };
 
