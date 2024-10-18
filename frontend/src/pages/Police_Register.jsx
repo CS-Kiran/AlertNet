@@ -263,7 +263,7 @@ export default function PoliceRegistration() {
               htmlFor="department"
               className="text-sm font-medium text-gray-600"
             >
-              Police Department
+              Department
             </label>
             <input
               type="text"
@@ -372,25 +372,6 @@ export default function PoliceRegistration() {
               type="file"
               id="govIdProof"
               name="govIdProof"
-              accept="image/*,application/pdf"
-              onChange={handleFileChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-              required
-            />
-          </div>
-
-          {/* Police Certification Upload */}
-          <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="policeCertificate"
-              className="text-sm font-medium text-gray-600"
-            >
-              Upload Police Certification
-            </label>
-            <input
-              type="file"
-              id="policeCertificate"
-              name="policeCertificate"
               accept="image/*,application/pdf"
               onChange={handleFileChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
