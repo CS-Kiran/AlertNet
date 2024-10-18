@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAlert } from "../context/AlertContext";
 
 export default function CitizenRegistration() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,7 @@ export default function CitizenRegistration() {
     address: "",
   });
   const [consentGiven, setConsentGiven] = useState(false);
+  const { showAlert } = useAlert();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,10 +27,44 @@ export default function CitizenRegistration() {
     setConsentGiven(e.target.checked);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form Submitted:", formData);
+
+    const { name, email, password, phone, address } = formData;
+
+    const userData = {
+      name,
+      email,
+      password,
+      phone,
+      address,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:8080/api/citizens/register", userData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        console.log("User registered successfully");
+        showAlert("success", "Registration successful!");
+        handleClear();
+      } else {
+        showAlert(
+          "error",
+          response.data.message ||
+            "Registration failed. Please check your credentials."
+        );
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      showAlert(
+        "error",
+        error.response?.data?.message || "Registration failed. Please try again."
+      );
+    }
   };
 
   const handleClear = () => {
@@ -57,7 +94,6 @@ export default function CitizenRegistration() {
 
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-r from-gray-50 to-gray-100 p-6">
-
       {/* Back to Home Icon */}
       <Link
         to="/login"
@@ -71,19 +107,13 @@ export default function CitizenRegistration() {
           stroke="currentColor"
           className="w-8 h-8 text-gray-600 hover:text-gray-800 transition-all"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 19l-7-7 7-7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </Link>
 
       {/* Registration Form Container */}
       <div className="w-full max-w-3xl bg-white rounded-lg shadow-2xl p-8 z-10">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8">
-          Citizen Registration
-        </h2>
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8">Citizen Registration</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Full Name */}
@@ -105,10 +135,7 @@ export default function CitizenRegistration() {
 
           {/* Email */}
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="email"
-              className="text-sm font-medium text-gray-600"
-            >
+            <label htmlFor="email" className="text-sm font-medium text-gray-600">
               Email Address
             </label>
             <input
@@ -125,10 +152,7 @@ export default function CitizenRegistration() {
 
           {/* Password */}
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-600"
-            >
+            <label htmlFor="password" className="text-sm font-medium text-gray-600">
               Password
             </label>
             <input
@@ -145,10 +169,7 @@ export default function CitizenRegistration() {
 
           {/* Confirm Password */}
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="confirmPassword"
-              className="text-sm font-medium text-gray-600"
-            >
+            <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-600">
               Confirm Password
             </label>
             <input
@@ -165,10 +186,7 @@ export default function CitizenRegistration() {
 
           {/* Phone Number */}
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="phone"
-              className="text-sm font-medium text-gray-600"
-            >
+            <label htmlFor="phone" className="text-sm font-medium text-gray-600">
               Phone Number
             </label>
             <input
@@ -185,10 +203,7 @@ export default function CitizenRegistration() {
 
           {/* Address */}
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="address"
-              className="text-sm font-medium text-gray-600"
-            >
+            <label htmlFor="address" className="text-sm font-medium text-gray-600">
               Address
             </label>
             <textarea
@@ -213,10 +228,7 @@ export default function CitizenRegistration() {
               className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               required
             />
-            <label
-              htmlFor="consent"
-              className="text-sm font-medium text-gray-600"
-            >
+            <label htmlFor="consent" className="text-sm font-medium text-gray-600">
               I consent to the storage of my data for registration purposes.
             </label>
           </div>
@@ -232,7 +244,7 @@ export default function CitizenRegistration() {
               Clear
             </button>
 
-           {/* Submit Button */}
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={!isFormValid()}
@@ -242,16 +254,12 @@ export default function CitizenRegistration() {
             >
               Register
             </button>
-
           </div>
         </form>
 
         <div className="mt-6 text-center">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-blue-600 hover:text-blue-800 font-bold transition duration-300"
-          >
+          <Link to="/login" className="text-blue-600 hover:text-blue-800 font-bold transition duration-300">
             Sign in
           </Link>
         </div>
