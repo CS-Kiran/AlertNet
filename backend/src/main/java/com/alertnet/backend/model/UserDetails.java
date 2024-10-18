@@ -8,12 +8,21 @@ public class UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long citizen_id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, unique = true)
     private String phone;
+
+    @Column(nullable = false)
     private String address;
 
     // Constructors
@@ -29,11 +38,11 @@ public class UserDetails {
 
     // Getters and Setters
     public Long getId() {
-        return id;
+        return citizen_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.citizen_id = id;
     }
 
     public String getName() {
