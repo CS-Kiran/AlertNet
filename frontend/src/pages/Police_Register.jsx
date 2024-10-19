@@ -74,11 +74,11 @@ const handleSubmit = async (e) => {
   if (formData.govIdProof) { // Ensure a file is selected before appending
     formDataToSend.append("govIdProof", formData.govIdProof); // Should be a file object
   }
-
+  
   formDataToSend.append("emergencyContactName", formData.emergencyContactName);
   formDataToSend.append("emergencyContactPhone", formData.emergencyContactPhone);
   formDataToSend.append("emergencyContactRelation", formData.emergencyContactRelation);
-
+  console.log(formDataToSend)
   try {
     const response = await axios.post(
       "http://localhost:8080/api/police/register",
@@ -92,6 +92,7 @@ const handleSubmit = async (e) => {
     if (response.status === 200) {
       console.log("User registered successfully");
       showAlert("success", "Registration request sent successfully!");
+      handleClear();
     } else {
       showAlert(
         "error",
@@ -107,6 +108,27 @@ const handleSubmit = async (e) => {
   }
 };
 
+const handleClear = () => {
+  setFormData({
+    name: "",
+    dob: "",
+    gender: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
+    address: "",
+    department: "",
+    rank: "",
+    badgeNumber: "",
+    stationAddress: "",
+    yearsOfService: "",
+    govIdProof: null, // Store the file object here
+    emergencyContactName: "",
+    emergencyContactPhone: "",
+    emergencyContactRelation: "",
+  });
+};
 
 // Function to check if all required fields are filled
 const isFormValid = () => {
@@ -547,7 +569,8 @@ const isFormValid = () => {
             <button
               type="submit"
               disabled={!isFormValid()}
-              className={`w-full py-3 px-4 ml-2 bg-blue-600 text-white font-bold rounded-md transition duration-300 hover:bg-blue-700
+              className={`w-full py-3 px-4 ml-2 bg-blue-600 text-white font-bold rounded-md transition duration-300 hover:bg-blue-700 ${
+                !isFormValid() && "cursor-not-allowed opacity-50"
               }`}
             >
               Register

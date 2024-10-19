@@ -8,26 +8,56 @@ public class PoliceDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long police_id;
 
+    @Column(nullable = false)
     private String name;
+    
+    @Column(nullable = false)
     private String dob;
+    
+    @Column(nullable = false)
     private String gender;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, unique = true)
     private String phone;
+
+    @Column(nullable = false)
     private String address;
+
+    @Column(nullable = false)
     private String department;
+
+    @Column(nullable = false)
     private String rank;
+
+    @Column(nullable = false, unique = true)
     private String badgeNumber;
+
+    @Column(nullable = false)
     private String stationAddress;
+
+    @Column(nullable = false)
     private Integer yearsOfService;
 
     // Path for the uploaded government ID proof
+    @Column(nullable = false)
     private String govIdProofPath;
 
+
+    @Column(nullable = false)
     private String emergencyContactName;
+
+    @Column(nullable = false, unique = true)
     private String emergencyContactPhone;
+
+    @Column(nullable = false)
     private String emergencyContactRelation;
 
     // Constructors
@@ -57,11 +87,11 @@ public class PoliceDetails {
 
     // Getters and Setters
     public Long getId() {
-        return id;
+        return police_id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.police_id = id;
     }
 
     public String getName() {
