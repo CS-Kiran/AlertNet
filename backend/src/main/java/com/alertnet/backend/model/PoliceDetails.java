@@ -2,72 +2,40 @@ package com.alertnet.backend.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "police_details")
 public class PoliceDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long police_id;
+    private Long id;
 
-    @Column(nullable = false)
     private String name;
-    
-    @Column(nullable = false)
-    private LocalDate dob;
-    
-    @Column(nullable = false)
+    private String dob;
     private String gender;
-    
-    @Column(nullable = false, unique = true)
     private String email;
-    
-    @Column(nullable = false)
     private String password;
-    
-    @Column(nullable = false, unique = true)
     private String phone;
-    
-    @Column(nullable = false)
     private String address;
-    
-    @Column(nullable = false)
     private String department;
-    
-    @Column(nullable = false)
     private String rank;
-    
-    @Column(nullable = false, unique = true)
     private String badgeNumber;
-    
-    @Column(nullable = false, unique = true)
     private String stationAddress;
-    
-    @Column(nullable = false)
-    private int yearsOfService;
+    private Integer yearsOfService;
 
-    @Column(name = "gov_id_proof_path")
+    // Path for the uploaded government ID proof
     private String govIdProofPath;
 
-    @Column(nullable = false, unique = true)
     private String emergencyContactName;
-    
-    @Column(nullable = false, unique = true)
     private String emergencyContactPhone;
-    
-    @Column(nullable = false)
     private String emergencyContactRelation;
 
-    // Default constructor
-    public PoliceDetails() {
-    }
+    // Constructors
+    public PoliceDetails() {}
 
-    // Constructor with all fields
-    public PoliceDetails(String name, LocalDate dob, String gender, String email, String password, 
-                         String phone, String address, String department, String rank, String badgeNumber, 
-                         String stationAddress, int yearsOfService, String govIdProofPath, 
+    public PoliceDetails(String name, String dob, String gender, String email, String password, String phone,
+                         String address, String department, String rank, String badgeNumber,
+                         String stationAddress, Integer yearsOfService, String govIdProofPath,
                          String emergencyContactName, String emergencyContactPhone, String emergencyContactRelation) {
         this.name = name;
         this.dob = dob;
@@ -87,13 +55,13 @@ public class PoliceDetails {
         this.emergencyContactRelation = emergencyContactRelation;
     }
 
-    // Getters and setters
+    // Getters and Setters
     public Long getId() {
-        return police_id;
+        return id;
     }
 
     public void setId(Long id) {
-        this.police_id = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -104,11 +72,11 @@ public class PoliceDetails {
         this.name = name;
     }
 
-    public LocalDate getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
@@ -184,11 +152,11 @@ public class PoliceDetails {
         this.stationAddress = stationAddress;
     }
 
-    public int getYearsOfService() {
+    public Integer getYearsOfService() {
         return yearsOfService;
     }
 
-    public void setYearsOfService(int yearsOfService) {
+    public void setYearsOfService(Integer yearsOfService) {
         this.yearsOfService = yearsOfService;
     }
 

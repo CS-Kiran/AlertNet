@@ -18,94 +18,118 @@ export default function PoliceRegistration() {
     badgeNumber: "",
     stationAddress: "",
     yearsOfService: "",
-    govIdProof: null, // Government ID upload
+    govIdProof: null, // Store the file object here
     emergencyContactName: "",
     emergencyContactPhone: "",
     emergencyContactRelation: "",
-  });
+});
 
-  const [consentGiven, setConsentGiven] = useState(false);
-  const { showAlert } = useAlert();
+const [consentGiven, setConsentGiven] = useState(false);
+const { showAlert } = useAlert();
 
-  const handleInputChange = (e) => {
+const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-  };
+};
 
-  const handleCheckboxChange = (e) => {
+const handleCheckboxChange = (e) => {
     setConsentGiven(e.target.checked);
-  };
+};
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      console.log("Selected file:", file); // For debugging, to ensure file is selected
-      // Handle the file upload process here
-    } else {
-      console.log("No file selected");
-    }
-  };
+const handleFileChange = (e) => {
+  const file = e.target.files[0];  // Get the selected file
+  if (file) {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      govIdProof: file,  // Store the file object
+    }));
+  } else {
+    console.log("No file selected");
+  }
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const formDataToSend = new FormData();
+
+  // Append all other fields
+  formDataToSend.append("name", formData.name);
+  formDataToSend.append("dob", formData.dob);
+  formDataToSend.append("gender", formData.gender);
+  formDataToSend.append("email", formData.email);
+  formDataToSend.append("password", formData.password);
+  formDataToSend.append("phone", formData.phone);
+  formDataToSend.append("address", formData.address);
+  formDataToSend.append("department", formData.department);
+  formDataToSend.append("rank", formData.rank);
+  formDataToSend.append("badgeNumber", formData.badgeNumber);
+  formDataToSend.append("stationAddress", formData.stationAddress);
+  formDataToSend.append("yearsOfService", formData.yearsOfService);
   
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formDataToSend = new FormData();
-    Object.keys(formData).forEach((key) => {
-      formDataToSend.append(key, formData[key]);
-    });
+  // Append the file (not the name)
+  if (formData.govIdProof) { // Ensure a file is selected before appending
+    formDataToSend.append("govIdProof", formData.govIdProof); // Should be a file object
+  }
 
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/police/register",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response.status === 200) {
-        console.log("User registered successfully");
-        showAlert("success", "Registration request send successfully!");
-      } else {
-        showAlert(
-          "error",
-          response.data.message || "Could not send registration failed."
-        );
+  formDataToSend.append("emergencyContactName", formData.emergencyContactName);
+  formDataToSend.append("emergencyContactPhone", formData.emergencyContactPhone);
+  formDataToSend.append("emergencyContactRelation", formData.emergencyContactRelation);
+
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/api/police/register",
+      formDataToSend,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }
-    } catch (error) {
-      console.error("Error during registration", error);
+    );
+    if (response.status === 200) {
+      console.log("User registered successfully");
+      showAlert("success", "Registration request sent successfully!");
+    } else {
       showAlert(
         "error",
-        error.response?.data?.message ||
-          "Could not send registration failed. Please try again."
+        response.data.message || "Registration failed."
       );
     }
-  };
-
-  // Function to check if all required fields are filled
-  const isFormValid = () => {
-    return (
-      formData.name &&
-      formData.dob &&
-      formData.gender &&
-      formData.email &&
-      formData.password &&
-      formData.confirmPassword &&
-      formData.phone &&
-      formData.address &&
-      formData.department &&
-      formData.rank &&
-      formData.badgeNumber &&
-      formData.stationAddress &&
-      formData.govIdProof &&
-      formData.emergencyContactName &&
-      formData.emergencyContactPhone &&
-      consentGiven
+  } catch (error) {
+    console.error("Error during registration", error);
+    showAlert(
+      "error",
+      error.response?.data?.message || "Registration failed. Please try again."
     );
-  };
+  }
+};
+
+
+// Function to check if all required fields are filled
+const isFormValid = () => {
+    return (
+        formData.name &&
+        formData.dob &&
+        formData.gender &&
+        formData.email &&
+        formData.password &&
+        formData.confirmPassword &&
+        formData.phone &&
+        formData.address &&
+        formData.department &&
+        formData.rank &&
+        formData.badgeNumber &&
+        formData.stationAddress &&
+        formData.govIdProof && // Ensure the file is selected
+        formData.emergencyContactName &&
+        formData.emergencyContactPhone &&
+        consentGiven
+    );
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-gray-50 to-gray-100 p-6">
@@ -394,7 +418,6 @@ export default function PoliceRegistration() {
             </div>
           </div>
 
-          {/* Upload Section */}
           <div className="flex flex-col space-y-2">
             <label
               htmlFor="govIdProof"
@@ -524,8 +547,7 @@ export default function PoliceRegistration() {
             <button
               type="submit"
               disabled={!isFormValid()}
-              className={`w-full py-3 px-4 ml-2 bg-blue-600 text-white font-bold rounded-md transition duration-300 hover:bg-blue-700 ${
-                !isFormValid() && "cursor-not-allowed opacity-50"
+              className={`w-full py-3 px-4 ml-2 bg-blue-600 text-white font-bold rounded-md transition duration-300 hover:bg-blue-700
               }`}
             >
               Register

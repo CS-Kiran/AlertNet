@@ -30,6 +30,6 @@ public class AdminController {
             response.put("message", "Invalid username or password");
         }
 
-        return response; // Return the response as a JSON object
+        return response;
     }
 }
