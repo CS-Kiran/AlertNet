@@ -1,12 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "../context/AlertContext";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { showAlert } = useAlert();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +27,7 @@ const AdminLogin = () => {
       );
       if (response.status === 200 && response.data.success) {
         showAlert("success", "Login successful!");
+        navigate("/admin");
       } else {
         showAlert(
           "error",

@@ -59,6 +59,9 @@ public class PoliceDetails {
 
     @Column(nullable = false)
     private String emergencyContactRelation;
+    
+    @Column(name = "account_status", nullable = false, columnDefinition = "varchar(255) default 'in-review'")
+    private String accountStatus;
 
     // Constructors
     public PoliceDetails() {}
@@ -83,6 +86,7 @@ public class PoliceDetails {
         this.emergencyContactName = emergencyContactName;
         this.emergencyContactPhone = emergencyContactPhone;
         this.emergencyContactRelation = emergencyContactRelation;
+        this.accountStatus = "in-review";
     }
 
     // Getters and Setters
@@ -220,5 +224,13 @@ public class PoliceDetails {
 
     public void setEmergencyContactRelation(String emergencyContactRelation) {
         this.emergencyContactRelation = emergencyContactRelation;
+    }
+    
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
     }
 }
