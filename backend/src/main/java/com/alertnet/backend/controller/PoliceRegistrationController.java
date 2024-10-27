@@ -3,8 +3,10 @@ package com.alertnet.backend.controller;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -64,6 +66,46 @@ public class PoliceRegistrationController {
         }
     }
     
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> policeLogin(@RequestBody Map<String, String> loginRequest) {
+        String email = loginRequest.get("email");
+        String password = loginRequest.get("password");
+
+        Map<String, String> response = new HashMap<>();
+
+        // Fetch police details by email first
+        Optional<PoliceDetails> policeDetailsOptional = policeDetailsService.findByEmail(email);
+
+        if (policeDetailsOptional.isPresent()) {
+            PoliceDetails policeDetails = policeDetailsOptional.get();
+            String accountStatus = policeDetails.getAccountStatus();
+            
+            // Always include the account status in the response
+            response.put("accountStatus", accountStatus);
+
+            // Only allow login if the account is activated
+            if (!"activated".equalsIgnoreCase(accountStatus)) {
+                response.put("message", "Account not activated. Please contact admin.");
+                return ResponseEntity.status(200).body(response);
+            }
+
+            if (policeDetails.getPassword().equals(password)) {
+                response.put("message", "Login successful!");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "Invalid email or password.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+        } else {
+            response.put("message", "Email not found.");
+            response.put("accountStatus", "not-registered");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+
+
+    
     @GetMapping("/all")
     public ResponseEntity<List<PoliceDetails>> getAllPoliceDetails() {
         List<PoliceDetails> policeDetailsList = policeDetailsService.getAllPoliceDetails();
@@ -119,4 +161,5 @@ public class PoliceRegistrationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating status: " + e.getMessage());
         }
     }
+
 }

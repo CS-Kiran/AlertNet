@@ -16,29 +16,24 @@ import java.util.Optional;
 public class PoliceDetailsService {
 
     @Value("${upload.directory}")
-    private String uploadDir;  // Property to set the upload directory path
+    private String uploadDir;
 
     @Autowired
     private PoliceDetailsRepository policeDetailsRepository;
 
     public String registerPolice(MultipartFile file) throws IOException {
-        // Create the directory if it does not exist
         File directory = new File(uploadDir + "/police-id-proof");
         if (!directory.exists()) {
-            directory.mkdirs();  // Create the directory
+            directory.mkdirs();
         }
 
-        // Define the file path where the image will be stored
         File imageFile = new File(directory, file.getOriginalFilename());
         
-        // Save the file to the specified path
         file.transferTo(imageFile);  // This will save the file
 
-        // Return the path for saving in the database
         return imageFile.getAbsolutePath();
     }
 
-    // Method to save PoliceDetails entity
     public void savePoliceDetails(PoliceDetails policeDetails) {
         policeDetailsRepository.save(policeDetails);
     }
@@ -61,5 +56,14 @@ public class PoliceDetailsService {
             return true;
         }
         return false;
+    }
+    
+    public Optional<PoliceDetails> findByEmail(String email) {
+        return policeDetailsRepository.findByEmail(email);
+    }
+    
+    public boolean validateLogin(String email, String password) {
+        Optional<PoliceDetails> policeDetails = findByEmail(email);
+        return policeDetails.isPresent() && policeDetails.get().getPassword().equals(password);
     }
 }

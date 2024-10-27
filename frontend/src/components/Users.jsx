@@ -23,9 +23,68 @@ const User = () => {
     fetchPoliceDetails();
   }, [showAlert]);
 
-  // Function to activate the police account
-  const activatePolice = async () => {
-    if (!selectedPolice) return;
+// Function to activate the police account
+const activatePolice = async () => {
+  if (!selectedPolice) return;
+
+  // Confirmation dialog
+  const confirmed = window.confirm("Are you sure you want to activate this account?");
+  if (!confirmed) return; // Exit if the user cancels
+
+  // Update local state
+  setPoliceDetails((prevDetails) =>
+    prevDetails.map((police) =>
+      police.id === selectedPolice.id
+        ? { ...police, accountStatus: "activated" }
+        : police
+    )
+  );
+
+  try {
+    await axios.put(
+      `http://localhost:8080/api/police/activate/${selectedPolice.id}`,
+      { accountStatus: "activated" }
+    );
+    showAlert("success", "Account activated successfully!");
+    closeModal();
+  } catch (error) {
+    showAlert("error", error.response?.data?.message || "Activation failed.");
+    setPoliceDetails((prevDetails) =>
+      prevDetails.map((police) =>
+        police.id === selectedPolice.id
+          ? { ...police, accountStatus: "in-review" }
+          : police
+      )
+    );
+  }
+};
+
+// Function to suspend the police account
+const suspendPolice = async () => {
+  if (!selectedPolice) return;
+
+  // Confirmation dialog
+  const confirmed = window.confirm("Are you sure you want to suspend this account? Respective user will not be able to access the account again.");
+  if (!confirmed) return; // Exit if the user cancels
+
+  // Update local state
+  setPoliceDetails((prevDetails) =>
+    prevDetails.map((police) =>
+      police.id === selectedPolice.id
+        ? { ...police, accountStatus: "suspended" }
+        : police
+    )
+  );
+
+  try {
+    await axios.put(
+      `http://localhost:8080/api/police/suspend/${selectedPolice.id}`,
+      { accountStatus: "suspended" }
+    );
+    showAlert("success", "Account suspended successfully!");
+    closeModal();
+  } catch (error) {
+    showAlert("error", error.response?.data?.message || "Suspension failed.");
     setPoliceDetails((prevDetails) =>
       prevDetails.map((police) =>
         police.id === selectedPolice.id
@@ -33,55 +92,9 @@ const User = () => {
           : police
       )
     );
+  }
+};
 
-    try {
-      await axios.put(
-        `http://localhost:8080/api/police/activate/${selectedPolice.id}`,
-        { accountStatus: "activated" }
-      );
-      showAlert("success", "Account activated successfully!");
-      closeModal();
-    } catch (error) {
-      showAlert("error", error.response?.data?.message || "Activation failed.");
-      setPoliceDetails((prevDetails) =>
-        prevDetails.map((police) =>
-          police.id === selectedPolice.id
-            ? { ...police, accountStatus: "in-review" }
-            : police
-        )
-      );
-    }
-  };
-
-  // Function to suspend the police account
-  const suspendPolice = async () => {
-    if (!selectedPolice) return;
-    setPoliceDetails((prevDetails) =>
-      prevDetails.map((police) =>
-        police.id === selectedPolice.id
-          ? { ...police, accountStatus: "suspended" }
-          : police
-      )
-    );
-
-    try {
-      await axios.put(
-        `http://localhost:8080/api/police/suspend/${selectedPolice.id}`,
-        { accountStatus: "suspended" }
-      );
-      showAlert("success", "Account suspended successfully!");
-      closeModal();
-    } catch (error) {
-      showAlert("error", error.response?.data?.message || "Suspension failed.");
-      setPoliceDetails((prevDetails) =>
-        prevDetails.map((police) =>
-          police.id === selectedPolice.id
-            ? { ...police, accountStatus: "activated" }
-            : police
-        )
-      );
-    }
-  };
 
   const handleView = (police) => {
     setSelectedPolice(police);
@@ -101,6 +114,7 @@ const User = () => {
           <table className="w-full text-left border-collapse rounded-lg overflow-hidden">
             <thead>
               <tr className="bg-blue-700 text-white text-lg font-semibold text-center">
+                <th className="p-4">Id</th>
                 <th className="p-4">Name</th>
                 <th className="p-4">Email</th>
                 <th className="p-4">Phone</th>
@@ -118,6 +132,7 @@ const User = () => {
                     key={index}
                     className="hover:bg-blue-100 transition-all duration-200 border-b border-gray-200 text-center"
                   >
+                    <td className="p-4">{police.id}</td>
                     <td className="p-4">{police.name}</td>
                     <td className="p-4">{police.email}</td>
                     <td className="p-4">{police.phone}</td>
@@ -157,8 +172,14 @@ const User = () => {
               &times;
             </button>
             <h2 className="text-2xl font-bold text-blue-700 mb-4">
-              {selectedPolice.name}
+              {selectedPolice.id} : {selectedPolice.name}
             </h2>
+            <p>
+              <strong>Date of Birth:</strong> {selectedPolice.dob}
+            </p>
+            <p>
+              <strong>Gender:</strong> {selectedPolice.gender}
+            </p>
             <p>
               <strong>Email:</strong> {selectedPolice.email}
             </p>
@@ -185,12 +206,6 @@ const User = () => {
               {selectedPolice.emergencyContactName} (
               {selectedPolice.emergencyContactRelation}),{" "}
               {selectedPolice.emergencyContactPhone}
-            </p>
-            <p>
-              <strong>Date of Birth:</strong> {selectedPolice.dob}
-            </p>
-            <p>
-              <strong>Gender:</strong> {selectedPolice.gender}
             </p>
             <p>
               <strong>Government ID Proof:</strong>

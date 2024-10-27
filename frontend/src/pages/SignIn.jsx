@@ -1,13 +1,55 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAlert } from "../context/AlertContext"; // Import your useAlert hook
+import axios from "axios"; // Import axios
 
 export default function SignIn() {
   const [isCitizenLogin, setIsCitizenLogin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { showAlert } = useAlert();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!isCitizenLogin) {
+      try {
+        const response = await axios.post("http://localhost:8080/api/police/login", {
+          email,
+          password,
+        });
+
+        const data = response.data;
+        
+        // Always check for account status and show alerts accordingly
+        if (response.status === 200) {
+          if (data.accountStatus === "activated") {
+            showAlert("success", "Login successful!");
+            // You can navigate to the police dashboard or another page here
+            // navigate("/police-dashboard");
+          } else if (data.accountStatus === "suspended") {
+            showAlert("warning", "Your account is suspended. Please contact admin.");
+          } else {
+            showAlert("info", "Your account is not activated. Please contact admin.");
+          }
+        } else {
+          showAlert("error", "Invalid email or password.");
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          showAlert("error", "Email not found. Please register.");
+        } else {
+          showAlert("error", "Error during login. Please try again.");
+        }
+      }
+    } else {
+      showAlert("warning", "Citizen login functionality is not yet implemented.");
+    }
+  };
 
   return (
     <div className="relative h-screen flex flex-col items-center justify-center bg-gray-50 overflow-hidden">
-      
-      {/* Back to Home Icon */}
       <Link
         to="/"
         className="fixed z-10 top-4 left-4 border-2 p-2 rounded-full border-gray-600 hover:scale-110 transition duration-300"
@@ -20,22 +62,13 @@ export default function SignIn() {
           stroke="currentColor"
           className="w-8 h-8 text-gray-600 hover:text-gray-800 transition-all"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 19l-7-7 7-7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </Link>
 
-      {/* Heading */}
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
-        Login to your account
-      </h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">Login to your account</h1>
 
-      {/* Login Card */}
       <div className="relative z-10 w-full max-w-md p-8 bg-white shadow-lg rounded-lg border border-gray-200">
-        {/* Tabs for Citizen and Police Login */}
         <div className="flex justify-center mb-6">
           <button
             onClick={() => setIsCitizenLogin(true)}
@@ -59,18 +92,14 @@ export default function SignIn() {
           </button>
         </div>
 
-        {/* Form */}
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="email"
-              className="text-sm font-medium text-gray-600"
-            >
-              Email
-            </label>
+            <label htmlFor="email" className="text-sm font-medium text-gray-600">Email</label>
             <input
               type="email"
               id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className={`w-full px-4 py-3 border border-gray-300 rounded focus:outline-none transition-all ${
                 isCitizenLogin
                   ? "focus:ring-2 focus:ring-blue-300 focus:border-transparent"
@@ -82,15 +111,12 @@ export default function SignIn() {
           </div>
 
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-600"
-            >
-              Password
-            </label>
+            <label htmlFor="password" className="text-sm font-medium text-gray-600">Password</label>
             <input
               type="password"
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className={`w-full px-4 py-3 border border-gray-300 rounded focus:outline-none transition-all ${
                 isCitizenLogin
                   ? "focus:ring-2 focus:ring-blue-300 focus:border-transparent"
@@ -113,7 +139,6 @@ export default function SignIn() {
           </button>
         </form>
 
-        {/* Register Link - Conditional Based on Citizen/Police Tab */}
         <div className="text-center mt-4">
           <p>
             Don&apos;t have an account?
