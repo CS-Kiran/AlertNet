@@ -16,3 +16,6 @@ export default function PoliceDashboard() {
     </div>
     )
 }
+
+// 1 --> Add Login Police Details like Name , id etc on dashboard + Total alerts broadcasted + Case solved/pending + Public Reports.
+// 2 --> Create API with alert_id , police_id(FK) columns also.

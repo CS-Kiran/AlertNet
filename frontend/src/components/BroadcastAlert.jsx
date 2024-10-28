@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+import { useAlert } from "../context/AlertContext";
 
 const BroadcastAlert = () => {
   const [formData, setFormData] = useState({
@@ -25,14 +27,14 @@ const BroadcastAlert = () => {
     contactPhone: "",
     secondaryContactName: "",
     secondaryContactPhone: "",
-    knownAffiliations: "",
-    previousOffenses: "",
     crimeCommitted: "",
     dangerLevel: "",
     additionalInfo: "",
+    policeId: 1
   });
 
   const [step, setStep] = useState(1);
+  const { showAlert } = useAlert();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,9 +45,69 @@ const BroadcastAlert = () => {
     setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted", formData);
+    const form = new FormData();
+    for (const key in formData) {
+      form.append(key, formData[key]);
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/alerts/create",
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log("User registered successfully");
+        showAlert("success", "Registration request sent successfully!");
+        handleClear();
+      } else {
+        showAlert("error", response.data.message || "Registration failed.");
+      }
+    } catch (error) {
+      console.error("Error during registration", error);
+      showAlert(
+        "error",
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
+    }
+  };
+
+  const handleClear = () => {
+    setFormData({
+      type: "",
+      image: null,
+      name: "",
+      description: "",
+      age: "",
+      gender: "",
+      height: "",
+      weight: "",
+      eyeColor: "",
+      hairColor: "",
+      distinctiveFeatures: "",
+      lastSeenLocation: "",
+      lastSeenDate: "",
+      clothingDescription: "",
+      healthCondition: "",
+      caseDetails: "",
+      caseID: "",
+      dateOfReport: "",
+      caseStatus: "",
+      contactName: "",
+      contactPhone: "",
+      secondaryContactName: "",
+      secondaryContactPhone: "",
+      crimeCommitted: "",
+      dangerLevel: "",
+      additionalInfo: "",
+    });
   };
 
   const handleNextStep = () => setStep((prev) => Math.min(prev + 1, 5));
@@ -386,19 +448,6 @@ const BroadcastAlert = () => {
 
                   {formData.type === "wanted" && (
                     <>
-                      <div>
-                        <label className="block text-gray-600 font-medium">
-                          Previous Offenses
-                        </label>
-                        <input
-                          type="text"
-                          name="previousOffenses"
-                          value={formData.previousOffenses}
-                          onChange={handleInputChange}
-                          placeholder="Previous offenses"
-                          className="w-full border border-gray-300 p-2 rounded-lg"
-                        />
-                      </div>
                       <div>
                         <label className="block text-gray-600 font-medium">
                           Crime Committed

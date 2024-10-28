@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "upload.directory",
-  "type": "java.lang.String",
-  "description": "A description for 'upload.directory'"
-}]}
+{"properties": [
+  {
+    "name": "upload.directory",
+    "type": "java.lang.String",
+    "description": "A description for 'upload.directory'"
+  },
+  {
+    "name": "alert.upload.directory",
+    "type": "java.lang.String",
+    "description": "A description for 'alert.upload.directory'"
+  }
+]}
