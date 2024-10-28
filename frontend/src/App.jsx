@@ -7,6 +7,7 @@ import CitizenRegistration from "./pages/Citizen_Register";
 import PoliceRegistration from "./pages/Police_Register";
 import AdminLogin from "./pages/AdminLogin";
 import AdminUsers from "./pages/AdminUsers";
+import PoliceDashboard from "./pages/PoliceDashboard";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/register_citizen" element={<CitizenRegistration />} />
           <Route path="/register_police" element={<PoliceRegistration />} />
+          <Route path="/police/*" element={<PoliceDashboard />} />
           <Route path="/learn-more" element={<LearnMore />} />
         </Routes>
       </AlertProvider>

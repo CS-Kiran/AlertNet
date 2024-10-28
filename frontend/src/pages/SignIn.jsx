@@ -26,8 +26,7 @@ export default function SignIn() {
         if (response.status === 200) {
           if (data.accountStatus === "activated") {
             showAlert("success", "Login successful!");
-            // You can navigate to the police dashboard or another page here
-            // navigate("/police-dashboard");
+            navigate("/police/dashboard");
           } else if (data.accountStatus === "suspended") {
             showAlert("warning", "Your account is suspended. Please contact admin.");
           } else {
