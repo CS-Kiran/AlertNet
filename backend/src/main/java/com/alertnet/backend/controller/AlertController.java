@@ -1,9 +1,18 @@
 package com.alertnet.backend.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -84,6 +93,53 @@ public class AlertController {
             return ResponseEntity.ok(savedAlert);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving alert: " + e.getMessage());
+        }
+    }
+    
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllAlerts() {
+        try {
+            List<Alert> alerts = alertService.findAllAlerts();
+            return ResponseEntity.ok(alerts);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching alerts: " + e.getMessage());
+        }
+    }
+    
+    @GetMapping("/{filename:.+}")
+    public ResponseEntity<Resource> getAlertImage(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get("/home/ubuntu/Desktop/AlertNet/backend/uploads/alerts").resolve(filename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                String contentType = Files.probeContentType(filePath);
+                if (contentType == null) {
+                    contentType = "application/octet-stream"; // Default type
+                }
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(contentType))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
+    // API to view alerts based on police_id
+    @GetMapping("/api/alerts/police/{policeId}")
+    public ResponseEntity<?> getAlertsByPoliceId(@PathVariable Long policeId) {
+        try {
+            List<Alert> alerts = alertService.findAlertsByPoliceId(policeId); // This should return alerts by police ID
+            return ResponseEntity.ok(alerts);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching alerts: " + e.getMessage());
         }
     }
 

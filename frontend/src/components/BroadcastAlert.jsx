@@ -18,7 +18,7 @@ const BroadcastAlert = () => {
     lastSeenLocation: "",
     lastSeenDate: "",
     caseID: "",
-    dateOfReport: "",
+    dateOfReport: new Date().toISOString().split("T")[0],
     caseStatus: "",
     contactName: "",
     contactPhone: "",
@@ -58,24 +58,25 @@ const BroadcastAlert = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData();
-  
+
     // Append policeId
     form.append("policeId", userInfo.id);
-  
+
     // Append each formData field to the FormData object
     for (const key in formData) {
       if (formData[key] !== undefined) {
         form.append(key, formData[key]);
       }
     }
-  
+
     // Check and append imagePath if it exists
-    if (formData.imageFile) { // Ensure this key matches your formData structure
+    if (formData.imageFile) {
+      // Ensure this key matches your formData structure
       form.append("imagePath", formData.imageFile);
     }
-  
+
     console.log("Form Data Before Submission:", [...form.entries()]);
-  
+
     try {
       const response = await axios.post(
         "http://localhost:8080/api/alerts/create",
@@ -86,35 +87,33 @@ const BroadcastAlert = () => {
           },
         }
       );
-  
+
       if (response.status === 200) {
-        console.log("Alert posted successfully:", response.data);
         showAlert("success", "Alert sent successfully!");
         handleClear();
       } else {
-        console.error("Unexpected response status:", response.status);
         showAlert("error", response.data.message || "Failed to send alert.");
       }
     } catch (error) {
-      console.error("Error during alert submission:", error);
-  
       if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
         showAlert(
           "error",
-          error.response.data.message || "Failed to send alert. Please try again."
+          error.response.data.message ||
+            "Failed to send alert. Please try again."
         );
       } else if (error.request) {
-        console.error("Request data:", error.request);
-        showAlert("error", "No response received from the server. Please try again.");
+        showAlert(
+          "error",
+          "No response received from the server. Please try again."
+        );
       } else {
-        console.error("Error message:", error.message);
-        showAlert("error", "An error occurred while sending the alert. Please try again.");
+        showAlert(
+          "error",
+          "An error occurred while sending the alert. Please try again."
+        );
       }
     }
   };
-  
 
   const handleClear = () => {
     setFormData({
@@ -294,28 +293,50 @@ const BroadcastAlert = () => {
                     <label className="block text-gray-600 font-medium">
                       Eye Color
                     </label>
-                    <input
-                      type="text"
+                    <select
                       name="eyeColor"
                       value={formData.eyeColor}
                       onChange={handleInputChange}
-                      placeholder="Eye color"
+                      required
                       className="w-full border border-gray-300 p-2 rounded-lg"
-                    />
+                    >
+                      <option value="" disabled>
+                        Select eye color
+                      </option>
+                      <option value="black">Black</option>
+                      <option value="brown">Brown</option>
+                      <option value="blue">Blue</option>
+                      <option value="green">Green</option>
+                      <option value="hazel">Hazel</option>
+                      <option value="amber">Amber</option>
+                      <option value="gray">Gray</option>
+                      <option value="other">Other</option>
+                    </select>
                   </div>
                   <div>
                     <label className="block text-gray-600 font-medium">
                       Hair Color
                     </label>
-                    <input
-                      type="text"
+                    <select
                       name="hairColor"
                       value={formData.hairColor}
                       onChange={handleInputChange}
-                      placeholder="Hair color"
+                      required
                       className="w-full border border-gray-300 p-2 rounded-lg"
-                    />
+                    >
+                      <option value="" disabled>
+                        Select hair color
+                      </option>
+                      <option value="black">Black</option>
+                      <option value="brown">Brown</option>
+                      <option value="blonde">Blonde</option>
+                      <option value="red">Red</option>
+                      <option value="gray">Gray</option>
+                      <option value="white">White</option>
+                      <option value="other">Other</option>
+                    </select>
                   </div>
+
                   <div>
                     <label className="block text-gray-600 font-medium">
                       Distinctive Features
@@ -351,7 +372,7 @@ const BroadcastAlert = () => {
                       onChange={handleInputChange}
                       required
                       placeholder="Last seen location"
-                      className="w-full border border-gray-300 p-2 rounded-lg"
+                      className="w-full border border-gray-300 p-2 rounded-lg mt-2"
                     />
                   </div>
                   <div>

@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -60,6 +61,15 @@ public class AlertService {
         Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         
         return path.toString();  // Return the file path
+    }
+    
+    public List<Alert> findAllAlerts() {
+        return alertRepository.findAll(); // This method retrieves all alerts from the database
+    }
+
+    // Method to find alerts by police ID
+    public List<Alert> findAlertsByPoliceId(Long policeId) {
+        return alertRepository.findByPoliceId(policeId); // This method retrieves alerts by police ID
     }
 
 }
