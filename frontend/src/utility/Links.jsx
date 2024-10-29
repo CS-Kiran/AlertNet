@@ -13,7 +13,7 @@ export const linksByRole = {
   ],
   admin: [
     { name: "Manage Users", path: "/admin/users" },
-    { name: "Notifications", path: "/admin/notifications" },
+    { name: "View Queries", path: "/admin/queries" },
   ],
 };
 

@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alertnet.backend.model.Alert;
-import com.alertnet.backend.model.MissingPersonAlert;
-import com.alertnet.backend.model.WantedPersonAlert;
 import com.alertnet.backend.service.AlertService;
 
 @RestController
@@ -31,12 +29,8 @@ public class AlertController {
         @RequestParam("weight") Double weight,
         @RequestParam("eyeColor") String eyeColor,
         @RequestParam("hairColor") String hairColor,
-        @RequestParam("distinctiveFeatures") String distinctiveFeatures,
         @RequestParam("lastSeenLocation") String lastSeenLocation,
         @RequestParam("lastSeenDate") LocalDate lastSeenDate,
-        @RequestParam("clothingDescription") String clothingDescription,
-        @RequestParam("healthCondition") String healthCondition,
-        @RequestParam("caseDetails") String caseDetails,
         @RequestParam("caseID") String caseID,
         @RequestParam("dateOfReport") LocalDate dateOfReport,
         @RequestParam("caseStatus") String caseStatus,
@@ -50,17 +44,8 @@ public class AlertController {
         @RequestParam("policeId") Long policeId
     ) {
         try {
-            Alert alert;
-            if (type.equalsIgnoreCase("wanted")) {
-                WantedPersonAlert wantedAlert = new WantedPersonAlert();
-                wantedAlert.setCrimeCommitted(crimeCommitted);
-                wantedAlert.setDangerLevel(dangerLevel);
-                alert = wantedAlert;
-            } else {
-                MissingPersonAlert missingAlert = new MissingPersonAlert();
-                alert = missingAlert;
-            }
-
+            // Create a new Alert instance
+            Alert alert = new Alert();
             alert.setType(type);
             alert.setName(name);
             alert.setDescription(description);
@@ -70,12 +55,8 @@ public class AlertController {
             alert.setWeight(weight);
             alert.setEyeColor(eyeColor);
             alert.setHairColor(hairColor);
-            alert.setDistinctiveFeatures(distinctiveFeatures);
             alert.setLastSeenLocation(lastSeenLocation);
             alert.setLastSeenDate(lastSeenDate);
-            alert.setClothingDescription(clothingDescription);
-            alert.setHealthCondition(healthCondition);
-            alert.setCaseDetails(caseDetails);
             alert.setCaseID(caseID);
             alert.setDateOfReport(dateOfReport);
             alert.setCaseStatus(caseStatus);
@@ -85,6 +66,19 @@ public class AlertController {
             alert.setSecondaryContactPhone(secondaryContactPhone);
             alert.setPoliceId(policeId);
 
+            // Set optional fields based on alert type
+            if (type.equalsIgnoreCase("wanted")) {
+                alert.setCrimeCommitted(crimeCommitted);
+                alert.setDangerLevel(dangerLevel);
+            }
+
+            // Handle image upload if provided
+            if (image != null && !image.isEmpty()) {
+                // Save the image and get the file path
+                String imagePath = alertService.saveImage(image);
+                alert.setImagePath(imagePath);  // Assuming Alert has an imagePath field
+            }
+
             // Save the alert
             Alert savedAlert = alertService.saveAlert(alert, image);
             return ResponseEntity.ok(savedAlert);
@@ -92,5 +86,5 @@ public class AlertController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving alert: " + e.getMessage());
         }
     }
-}
 
+}

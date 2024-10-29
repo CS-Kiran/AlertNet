@@ -1,15 +1,12 @@
 package com.alertnet.backend.model;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Alert {
+public class Alert {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "alert_seq")
-    @SequenceGenerator(name = "alert_seq", sequenceName = "alert_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long alertId;
 
     @Column(nullable = false)
@@ -17,61 +14,57 @@ public abstract class Alert {
 
     @Column(nullable = false)
     private String name;
-    
-	@Column(nullable = false)    
-	private String description;
-	
-	@Column(nullable = false)    
-	private Integer age;
-	
-	@Column(nullable = false)    
-	private String gender;
-	
-	@Column(nullable = false)	
-	private Double height;
-	
-	@Column(nullable = false)    
-	private Double weight;
-	
-	@Column(nullable = false)    
-	private String eyeColor;
-	
-	@Column(nullable = false)    
-	private String hairColor;
-	
-	private String distinctiveFeatures;
-	
-	@Column(nullable = false)    
-	private String lastSeenLocation;
-	
-	@Column(nullable = false)    
-	private LocalDate lastSeenDate;
-	
-	private String clothingDescription;
-	
-	private String healthCondition;
-	
-	@Column(nullable = false)    
-	private String caseDetails;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private Integer age;
+
+    @Column(nullable = false)
+    private String gender;
+
+    @Column(nullable = false)
+    private Double height;
+
+    @Column(nullable = false)
+    private Double weight;
+
+    @Column(nullable = false)
+    private String eyeColor;
+
+    @Column(nullable = false)
+    private String hairColor;
+
+    @Column(nullable = false)
+    private String lastSeenLocation;
+
+    @Column(nullable = false)
+    private LocalDate lastSeenDate;
 
     @Column(unique = true)
     private String caseID;
 
     @Column(nullable = false)
-	private LocalDate dateOfReport;
-	
-	@Column(nullable = false)    
-	private String caseStatus;
-	
-	@Column(nullable = false)    
-	private String contactName;
-	
-	@Column(nullable = false)    
-	private String contactPhone;
-	
+    private LocalDate dateOfReport;
+
+    @Column(nullable = false)
+    private String caseStatus;
+
+    @Column(nullable = false)
+    private String contactName;
+
+    @Column(nullable = false)
+    private String contactPhone;
+
     private String secondaryContactName;
     private String secondaryContactPhone;
-    private String additionalInfo;
+
+    @Column(name = "crime_committed")  // Column name for database consistency
+    private String crimeCommitted;
+
+    @Column(name = "danger_level")  // Column name for database consistency
+    private String dangerLevel;
 
     @Column(nullable = false)
     private Long policeId;
@@ -160,14 +153,6 @@ public abstract class Alert {
         this.hairColor = hairColor;
     }
 
-    public String getDistinctiveFeatures() {
-        return distinctiveFeatures;
-    }
-
-    public void setDistinctiveFeatures(String distinctiveFeatures) {
-        this.distinctiveFeatures = distinctiveFeatures;
-    }
-
     public String getLastSeenLocation() {
         return lastSeenLocation;
     }
@@ -182,30 +167,6 @@ public abstract class Alert {
 
     public void setLastSeenDate(LocalDate lastSeenDate) {
         this.lastSeenDate = lastSeenDate;
-    }
-
-    public String getClothingDescription() {
-        return clothingDescription;
-    }
-
-    public void setClothingDescription(String clothingDescription) {
-        this.clothingDescription = clothingDescription;
-    }
-
-    public String getHealthCondition() {
-        return healthCondition;
-    }
-
-    public void setHealthCondition(String healthCondition) {
-        this.healthCondition = healthCondition;
-    }
-
-    public String getCaseDetails() {
-        return caseDetails;
-    }
-
-    public void setCaseDetails(String caseDetails) {
-        this.caseDetails = caseDetails;
     }
 
     public String getCaseID() {
@@ -263,13 +224,21 @@ public abstract class Alert {
     public void setSecondaryContactPhone(String secondaryContactPhone) {
         this.secondaryContactPhone = secondaryContactPhone;
     }
-
-    public String getAdditionalInfo() {
-        return additionalInfo;
+    
+    public String getCrimeCommitted() {
+        return crimeCommitted;
     }
 
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public void setCrimeCommitted(String crimeCommitted) {
+        this.crimeCommitted = crimeCommitted;
+    }
+    
+    public String getDangerLevel() {
+        return dangerLevel;
+    }
+
+    public void setDangerLevel(String dangerLevel) {
+        this.dangerLevel = dangerLevel;
     }
 
     public Long getPoliceId() {

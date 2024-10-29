@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alertnet.backend.model.PoliceDetails;
 import com.alertnet.backend.service.PoliceDetailsService;
+import com.alertnet.backend.util.JwtUtil;
 
 @RestController
 @RequestMapping("/api/police")
@@ -79,8 +80,10 @@ public class PoliceRegistrationController {
         if (policeDetailsOptional.isPresent()) {
             PoliceDetails policeDetails = policeDetailsOptional.get();
             String accountStatus = policeDetails.getAccountStatus();
+            Long policeId = policeDetails.getId();
+            String policeName = policeDetails.getName();
             
-            // Always include the account status in the response
+            // Include account status in the response
             response.put("accountStatus", accountStatus);
 
             // Only allow login if the account is activated
@@ -90,7 +93,14 @@ public class PoliceRegistrationController {
             }
 
             if (policeDetails.getPassword().equals(password)) {
+                // Generate JWT token with police ID and name
+                String token = JwtUtil.generateToken(policeId, policeName);
+
                 response.put("message", "Login successful!");
+                response.put("policeId", String.valueOf(policeId)); // Send policeId as a string
+                response.put("policeName", policeName);
+                response.put("token", token); // Include JWT token
+
                 return ResponseEntity.ok(response);
             } else {
                 response.put("message", "Invalid email or password.");

@@ -13,37 +13,46 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isCitizenLogin) {
-      try {
-        const response = await axios.post("http://localhost:8080/api/police/login", {
-          email,
-          password,
-        });
+    const endpoint = isCitizenLogin 
+      ? "http://localhost:8080/api/citizen/login" 
+      : "http://localhost:8080/api/police/login";
 
-        const data = response.data;
-        
-        // Always check for account status and show alerts accordingly
-        if (response.status === 200) {
-          if (data.accountStatus === "activated") {
-            showAlert("success", "Login successful!");
-            navigate("/police/dashboard");
-          } else if (data.accountStatus === "suspended") {
-            showAlert("warning", "Your account is suspended. Please contact admin.");
+    const tokenKey = isCitizenLogin ? "citizenToken" : "policeToken";
+
+    try {
+      const response = await axios.post(endpoint, {
+        email,
+        password,
+      });
+
+      const data = response.data;
+
+      // Check login success and account status
+      if (response.status === 200) {
+        if (data.accountStatus === "activated") {
+          console.log(response.data)
+          localStorage.setItem(tokenKey, data.token); // Store JWT token
+          showAlert("success", "Login successful!");
+
+          if (isCitizenLogin) {
+            navigate("/citizen/dashboard");
           } else {
-            showAlert("info", "Your account is not activated. Please contact admin.");
+            navigate("/police/dashboard");
           }
+        } else if (data.accountStatus === "suspended") {
+          showAlert("warning", "Your account is suspended. Please contact admin.");
         } else {
-          showAlert("error", "Invalid email or password.");
+          showAlert("info", "Your account is not activated. Please contact admin.");
         }
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          showAlert("error", "Email not found. Please register.");
-        } else {
-          showAlert("error", "Error during login. Please try again.");
-        }
+      } else {
+        showAlert("error", "Invalid email or password.");
       }
-    } else {
-      showAlert("warning", "Citizen login functionality is not yet implemented.");
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        showAlert("error", "Email not found. Please register.");
+      } else {
+        showAlert("error", "Error during login. Please try again.");
+      }
     }
   };
 

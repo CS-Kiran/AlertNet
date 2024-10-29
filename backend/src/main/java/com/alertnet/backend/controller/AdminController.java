@@ -2,7 +2,9 @@ package com.alertnet.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import com.alertnet.backend.service.AdminService;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,12 +21,13 @@ public class AdminController {
         String username = credentials.get("username");
         String password = credentials.get("password");
 
-        boolean isAuthenticated = adminService.authenticateAdmin(username, password);
+        String token = adminService.authenticateAdmin(username, password);
         Map<String, Object> response = new HashMap<>();
 
-        if (isAuthenticated) {
+        if (token != null) {
             response.put("success", true);
             response.put("message", "Admin login successful");
+            response.put("token", token);
         } else {
             response.put("success", false);
             response.put("message", "Invalid username or password");

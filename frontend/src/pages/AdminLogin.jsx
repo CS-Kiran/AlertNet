@@ -15,19 +15,15 @@ const AdminLogin = () => {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/admin/login",
-        {
-          username,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        { username, password },
+        { headers: { "Content-Type": "application/json" } }
       );
+
       if (response.status === 200 && response.data.success) {
+        const { token } = response.data;
+        localStorage.setItem("adminToken", token);
         showAlert("success", "Login successful!");
-        navigate("/admin");
+        navigate("/admin/users");
       } else {
         showAlert(
           "error",

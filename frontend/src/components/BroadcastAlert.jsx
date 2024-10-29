@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAlert } from "../context/AlertContext";
+import { decodeJwt } from "../utility/decodeJwt";
 
 const BroadcastAlert = () => {
   const [formData, setFormData] = useState({
@@ -14,12 +15,8 @@ const BroadcastAlert = () => {
     weight: "",
     eyeColor: "",
     hairColor: "",
-    distinctiveFeatures: "",
     lastSeenLocation: "",
     lastSeenDate: "",
-    clothingDescription: "",
-    healthCondition: "",
-    caseDetails: "",
     caseID: "",
     dateOfReport: "",
     caseStatus: "",
@@ -29,12 +26,11 @@ const BroadcastAlert = () => {
     secondaryContactPhone: "",
     crimeCommitted: "",
     dangerLevel: "",
-    additionalInfo: "",
-    policeId: 1
   });
 
   const [step, setStep] = useState(1);
   const { showAlert } = useAlert();
+  const [userInfo, setUserInfo] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,13 +41,41 @@ const BroadcastAlert = () => {
     setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
   };
 
+  const tokenKey = "policeToken";
+
+  useEffect(() => {
+    const token = localStorage.getItem(tokenKey);
+    if (token) {
+      try {
+        const decoded = decodeJwt(token); // Use the custom decode function
+        setUserInfo(decoded);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
+  }, [tokenKey]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData();
+  
+    // Append policeId
+    form.append("policeId", userInfo.id);
+  
+    // Append each formData field to the FormData object
     for (const key in formData) {
-      form.append(key, formData[key]);
+      if (formData[key] !== undefined) {
+        form.append(key, formData[key]);
+      }
     }
-
+  
+    // Check and append imagePath if it exists
+    if (formData.imageFile) { // Ensure this key matches your formData structure
+      form.append("imagePath", formData.imageFile);
+    }
+  
+    console.log("Form Data Before Submission:", [...form.entries()]);
+  
     try {
       const response = await axios.post(
         "http://localhost:8080/api/alerts/create",
@@ -62,22 +86,35 @@ const BroadcastAlert = () => {
           },
         }
       );
+  
       if (response.status === 200) {
-        console.log("User registered successfully");
-        showAlert("success", "Registration request sent successfully!");
+        console.log("Alert posted successfully:", response.data);
+        showAlert("success", "Alert sent successfully!");
         handleClear();
       } else {
-        showAlert("error", response.data.message || "Registration failed.");
+        console.error("Unexpected response status:", response.status);
+        showAlert("error", response.data.message || "Failed to send alert.");
       }
     } catch (error) {
-      console.error("Error during registration", error);
-      showAlert(
-        "error",
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
-      );
+      console.error("Error during alert submission:", error);
+  
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        showAlert(
+          "error",
+          error.response.data.message || "Failed to send alert. Please try again."
+        );
+      } else if (error.request) {
+        console.error("Request data:", error.request);
+        showAlert("error", "No response received from the server. Please try again.");
+      } else {
+        console.error("Error message:", error.message);
+        showAlert("error", "An error occurred while sending the alert. Please try again.");
+      }
     }
   };
+  
 
   const handleClear = () => {
     setFormData({
@@ -91,12 +128,9 @@ const BroadcastAlert = () => {
       weight: "",
       eyeColor: "",
       hairColor: "",
-      distinctiveFeatures: "",
       lastSeenLocation: "",
       lastSeenDate: "",
-      clothingDescription: "",
       healthCondition: "",
-      caseDetails: "",
       caseID: "",
       dateOfReport: "",
       caseStatus: "",
@@ -106,11 +140,10 @@ const BroadcastAlert = () => {
       secondaryContactPhone: "",
       crimeCommitted: "",
       dangerLevel: "",
-      additionalInfo: "",
     });
   };
 
-  const handleNextStep = () => setStep((prev) => Math.min(prev + 1, 5));
+  const handleNextStep = () => setStep((prev) => Math.min(prev + 1, 4));
   const handlePrevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   return (
@@ -485,57 +518,6 @@ const BroadcastAlert = () => {
                 </div>
               </>
             )}
-
-            {step === 5 && (
-              <>
-                {/* Step 5: Additional Information */}
-                <h3 className="text-3xl font-semibold text-gray-700 text-center">
-                  Additional Information
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-gray-600 font-medium">
-                      Health Condition
-                    </label>
-                    <textarea
-                      name="healthCondition"
-                      value={formData.healthCondition}
-                      onChange={handleInputChange}
-                      rows="3"
-                      placeholder="Any known health conditions"
-                      className="w-full border border-gray-300 p-2 rounded-lg"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-600 font-medium">
-                      Clothing Description
-                    </label>
-                    <textarea
-                      name="clothingDescription"
-                      value={formData.clothingDescription}
-                      onChange={handleInputChange}
-                      rows="3"
-                      placeholder="Clothing description"
-                      className="w-full border border-gray-300 p-2 rounded-lg"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-600 font-medium">
-                      Additional Info
-                    </label>
-                    <textarea
-                      name="additionalInfo"
-                      value={formData.additionalInfo}
-                      onChange={handleInputChange}
-                      rows="3"
-                      placeholder="Any additional information"
-                      className="w-full border border-gray-300 p-2 rounded-lg"
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-
             {/* Navigation Buttons */}
             <div className="flex justify-between">
               {step > 1 && (
@@ -547,7 +529,7 @@ const BroadcastAlert = () => {
                   Previous
                 </button>
               )}
-              {step < 5 ? (
+              {step < 4 ? (
                 <button
                   type="button"
                   onClick={handleNextStep}

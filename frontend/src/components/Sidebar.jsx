@@ -1,11 +1,27 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { decodeJwt } from "../utility/decodeJwt";
 import { getLinksByRole } from "../utility/Links";
 
 const Sidebar = ({ role }) => {
   const links = getLinksByRole(role);
   const [activePath, setActivePath] = useState(links[0]?.path || "");
+  const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
+
+  const tokenKey = `${role}Token`;
+
+  useEffect(() => {
+    const token = localStorage.getItem(tokenKey);
+    if (token) {
+      try {
+        const decoded = decodeJwt(token); // Use the custom decode function
+        setUserInfo(decoded);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
+  }, [tokenKey]);
 
   useEffect(() => {
     if (activePath) {
@@ -19,13 +35,14 @@ const Sidebar = ({ role }) => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem(tokenKey);
     navigate("/");
   };
 
   return (
     <div className="h-screen w-72 bg-gradient-to-b from-blue-700 to-blue-600 text-slate-50 fixed shadow-lg">
-      <div className="text-center p-6 text-3xl font-bold tracking-wider border-b border-blue-500">
-        {role.charAt(0).toUpperCase() + role.slice(1)} Dashboard
+      <div className="text-center p-6 text-3xl font-bold tracking-wider border-blue-500 transition-all hover:scale-110 duration-300">
+        {userInfo ? `Welcome ${userInfo.username.charAt(0).toUpperCase() + userInfo.username.slice(1)}` : `${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard`}
       </div>
       <nav className="mt-10 ml-2 space-y-2">
         {links.map((link) => (
@@ -46,7 +63,7 @@ const Sidebar = ({ role }) => {
         <button
           onClick={handleLogout}
           aria-label="Logout"
-          className="w-full flex items-center justify-center px-6 py-3 font-semibold text-lg rounded-full transition-all bg-red-800 hover:bg-red-900 shadow-lg text-white"
+          className="w-full flex items-center justify-center px-6 py-3 font-semibold text-lg rounded-full transition-all bg-white hover:scale-105 duration-300 shadow-lg text-gray-800"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
