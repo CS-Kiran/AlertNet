@@ -1,13 +1,30 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { MdClose } from "react-icons/md";
+import { decodeJwt } from "../utility/decodeJwt";
 
 const ViewAlert = () => {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedAlert, setExpandedAlert] = useState(null);
-  const [filter, setFilter] = useState("all"); // State for the selected filter
+  const [filter, setFilter] = useState("all");
+  const [showPoliceAlerts, setShowPoliceAlerts] = useState(false);
+  const [showPoliceID, setShowPoliceID] = useState();
+
+  const tokenKey = "policeToken";
+
+  useEffect(() => {
+    const token = localStorage.getItem(tokenKey);
+    if (token) {
+      try {
+        const decoded = decodeJwt(token); // Use the custom decode function
+        setShowPoliceID(decoded);
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+    }
+  }, [tokenKey]);
 
   useEffect(() => {
     const fetchAlerts = async () => {
@@ -16,6 +33,7 @@ const ViewAlert = () => {
           "http://localhost:8080/api/alerts/all"
         );
         setAlerts(response.data);
+        console.log(response.data)
       } catch (err) {
         setError(err.response ? err.response.data : err.message);
       } finally {
@@ -52,14 +70,19 @@ const ViewAlert = () => {
 
   // Filter alerts based on the selected filter
   const filteredAlerts = alerts.filter((alert) => {
-    if (filter === "missing") {
-      return alert.type.toLowerCase() === "missing";
-    }
-    if (filter === "wanted") {
-      return alert.type.toLowerCase() === "wanted";
-    }
-    return true; // Show all alerts for 'all'
+    const matchesType =
+      filter === "all" ||
+      (filter === "missing" && alert.type.toLowerCase() === "missing") ||
+      (filter === "wanted" && alert.type.toLowerCase() === "wanted");
+
+    const matchesPoliceId = !showPoliceAlerts || (showPoliceID && alert.policeId === showPoliceID.id);
+
+    return matchesType && matchesPoliceId;
   });
+
+  const toggleShowPoliceAlerts = () => {
+    setShowPoliceAlerts((prevState) => !prevState);
+  };
 
   // Find the selected alert for the popup
   const selectedAlert = alerts.find((alert) => alert.alertId === expandedAlert);
@@ -69,6 +92,16 @@ const ViewAlert = () => {
       <h2 className="text-5xl font-bold text-center mb-6 text-blue-700">
         All Alerts
       </h2>
+
+      <div className="flex justify-center items-center mb-4">
+        <label className="mr-2 text-gray-700">Show My Alerts Only</label>
+        <input
+          type="checkbox"
+          checked={showPoliceAlerts}
+          onChange={toggleShowPoliceAlerts}
+          className="toggle-checkbox"
+        />
+      </div>
 
       {/* Filter Options */}
       <div className="flex justify-center mb-4">
@@ -146,7 +179,7 @@ const ViewAlert = () => {
       {expandedAlert && selectedAlert && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div
-            className="bg-white rounded-lg p-6 relative max-w-lg w-full overflow-y-auto max-h-screen"
+            className="bg-white rounded-lg p-6 relative max-w-lg w-full max-h-screen"
             style={{ maxHeight: "100vh" }}
           >
             <MdClose
