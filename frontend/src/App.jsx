@@ -8,6 +8,7 @@ import PoliceRegistration from "./pages/Police_Register";
 import AdminLogin from "./pages/AdminLogin";
 import AdminUsers from "./pages/AdminUsers";
 import PoliceDashboard from "./pages/PoliceDashboard";
+import Database from "./pages/Database";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register_citizen" element={<CitizenRegistration />} />
           <Route path="/register_police" element={<PoliceRegistration />} />
           <Route path="/police/*" element={<PoliceDashboard />} />
+          <Route path="/database" element={<Database />} />
           <Route path="/learn-more" element={<LearnMore />} />
         </Routes>
       </AlertProvider>

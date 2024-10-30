@@ -12,7 +12,7 @@ export default function PoliceDashboard() {
       <div className="flex-grow p-6 ml-72 bg-slate-50 min-h-screen">
         <Routes>
           <Route path="alerts" element={<BroadcastAlert/>} />
-          <Route path="view-alerts" element={<ViewAlert/>} />
+          <Route path="manage-alerts" element={<ViewAlert/>} />
         </Routes>
       </div>
     </div>

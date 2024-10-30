@@ -8,7 +8,7 @@ export const linksByRole = {
   police: [
     { name: "Dashboard", path: "/police/dashboard" },
     { name: "Broadcast Alert", path: "/police/alerts" },
-    { name: "View Alert", path: "/police/view-alerts" },
+    { name: "Manage Alerts", path: "/police/manage-alerts" },
     { name: "Reports", path: "/police/reports" },
     { name: "Notifications", path: "/police/notification" },
   ],
