@@ -15,7 +15,7 @@ const Sidebar = ({ role }) => {
     const token = localStorage.getItem(tokenKey);
     if (token) {
       try {
-        const decoded = decodeJwt(token); // Use the custom decode function
+        const decoded = decodeJwt(token);
         setUserInfo(decoded);
       } catch (error) {
         console.error("Failed to decode token:", error);

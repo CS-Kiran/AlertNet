@@ -25,4 +25,8 @@ public class UserDetailsService {
     public Optional<UserDetails> findByEmail(String email) {
         return userDetailsRepository.findByEmail(email);
     }
+    
+    public Optional<UserDetails> findById(Long citizen_id) {
+        return userDetailsRepository.findById(citizen_id);
+    }
 }

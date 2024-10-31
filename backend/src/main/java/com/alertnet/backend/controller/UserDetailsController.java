@@ -72,6 +72,16 @@ public class UserDetailsController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDetails> getUserById(@PathVariable Long id) {
+        Optional<UserDetails> userDetailsOptional = userDetailsService.findById(id);
 
+        if (userDetailsOptional.isPresent()) {
+            return ResponseEntity.ok(userDetailsOptional.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
 }
