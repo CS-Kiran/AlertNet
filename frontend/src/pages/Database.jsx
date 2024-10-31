@@ -122,7 +122,7 @@ const Database = () => {
             </p>
             <p className="text-gray-600">
               <span className="font-semibold">Status:</span>{" "}
-              <span className={`font-bold ${alert.caseStatus === "open" ? "text-green-600" : "text-red-600"}`}>
+              <span className={`font-bold ${alert.caseStatus === "open" ? "text-green-600" : alert.caseStatus === "in-progress" ? "text-yellow-600" : "text-red-600"}`}>
                 {alert.caseStatus.toUpperCase()}
               </span>
             </p>
@@ -143,7 +143,7 @@ const Database = () => {
               <img
                 src={`http://localhost:8080/api/alerts/${expandedAlert.imagePath.split("/").pop()}`}
                 alt={expandedAlert.name}
-                className="w-full h-64 object-cover rounded-lg mb-4 transition-transform transform duration-300 hover:scale-105"
+                className="w-auto h-64 object-cover rounded-lg mb-4 transition-transform transform duration-300 hover:scale-105"
               />
             )}
             <div className="text-gray-700">
@@ -172,7 +172,7 @@ const Database = () => {
                 </p>
               )}
               <p><strong>Status: </strong>
-                <span className={`font-bold ${expandedAlert.caseStatus === "open" ? "text-green-600" : "text-red-600"}`}>
+                <span className={`font-bold ${expandedAlert.caseStatus === "open" ? "text-green-600" : expandedAlert.caseStatus === "in-progress" ? "text-yellow-600" : "text-red-600"}`}>
                   {expandedAlert.caseStatus}
                 </span>
               </p>

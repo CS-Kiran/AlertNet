@@ -42,9 +42,8 @@ public class PoliceDetailsService {
         return policeDetailsRepository.findAll();
     }
 
-    public PoliceDetails getPoliceDetailsById(Long id) {
-        return policeDetailsRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Police details not found for id: " + id));
+    public Optional<PoliceDetails> getPoliceDetailsById(Long id) {
+        return policeDetailsRepository.findById(id);
     }
 
     public boolean updateAccountStatus(Long id, String status) {
@@ -65,5 +64,25 @@ public class PoliceDetailsService {
     public boolean validateLogin(String email, String password) {
         Optional<PoliceDetails> policeDetails = findByEmail(email);
         return policeDetails.isPresent() && policeDetails.get().getPassword().equals(password);
+    }
+    
+    public boolean updatePoliceDetails(Long id, PoliceDetails updatedDetails) {
+        Optional<PoliceDetails> existingDetailsOptional = policeDetailsRepository.findById(id);
+        if (existingDetailsOptional.isPresent()) {
+            PoliceDetails existingDetails = existingDetailsOptional.get();
+
+            existingDetails.setPhone(updatedDetails.getPhone());
+            existingDetails.setAddress(updatedDetails.getAddress());
+            existingDetails.setDepartment(updatedDetails.getDepartment());
+            existingDetails.setRank(updatedDetails.getRank());
+            existingDetails.setYearsOfService(updatedDetails.getYearsOfService());
+            existingDetails.setEmergencyContactName(updatedDetails.getEmergencyContactName());
+            existingDetails.setEmergencyContactPhone(updatedDetails.getEmergencyContactPhone());
+            existingDetails.setEmergencyContactRelation(updatedDetails.getEmergencyContactRelation());
+
+            policeDetailsRepository.save(existingDetails);
+            return true;
+        }
+        return false;
     }
 }

@@ -169,7 +169,7 @@ const ViewAlerts = () => {
                   .split("/")
                   .pop()}`}
                 alt={expandedAlert.name}
-                className="w-full h-64 object-cover rounded-lg mb-4 transition-transform transform duration-300 hover:scale-105"
+                className="w-auto h-64 object-cover rounded-lg mb-4 transition-transform transform duration-300 hover:scale-105"
               />
             )}
             <div className="text-gray-700">

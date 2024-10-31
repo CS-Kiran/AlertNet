@@ -1,5 +1,6 @@
 package com.alertnet.backend.service;
 
+import com.alertnet.backend.model.PoliceDetails;
 import com.alertnet.backend.model.UserDetails;
 import com.alertnet.backend.repository.UserDetailsRepository;
 
@@ -28,5 +29,18 @@ public class UserDetailsService {
     
     public Optional<UserDetails> findById(Long citizen_id) {
         return userDetailsRepository.findById(citizen_id);
+    }
+    
+    public boolean updateCitizenDetails(Long id, PoliceDetails updatedDetails) {
+        Optional<UserDetails> existingDetailsOptional = userDetailsRepository.findById(id);
+        if (existingDetailsOptional.isPresent()) {
+        	UserDetails existingDetails = existingDetailsOptional.get();
+
+            existingDetails.setPhone(updatedDetails.getPhone());
+            existingDetails.setAddress(updatedDetails.getAddress());
+            userDetailsRepository.save(existingDetails);
+            return true;
+        }
+        return false;
     }
 }

@@ -50,7 +50,7 @@ export default function CitizenDashboard() {
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message
+    return <div>{error}</div>;
   }
 
   return (
@@ -58,7 +58,7 @@ export default function CitizenDashboard() {
       <Sidebar role={role} />
       <div className="flex-grow p-6 ml-72 bg-slate-50 min-h-screen">
         <Routes>
-          <Route path="dashboard" element={<Profile role={role} userDetails={userDetails} onEditProfile={handleEditProfile} />} />
+          <Route path="dashboard" element={<Profile role={"citizens"} userDetails={userDetails} onEditProfile={handleEditProfile} />} />
           <Route path="view-alerts" element={<ViewAlerts />} />
         </Routes>
       </div>

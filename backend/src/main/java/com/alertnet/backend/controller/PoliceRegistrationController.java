@@ -112,9 +112,6 @@ public class PoliceRegistrationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
-
-
-
     
     @GetMapping("/all")
     public ResponseEntity<List<PoliceDetails>> getAllPoliceDetails() {
@@ -169,6 +166,33 @@ public class PoliceRegistrationController {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating status: " + e.getMessage());
+        }
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<PoliceDetails> getPoliceById(@PathVariable Long id) {
+        Optional<PoliceDetails> policeDetailsOptional = policeDetailsService.getPoliceDetailsById(id);
+
+        if (policeDetailsOptional.isPresent()) {
+            return ResponseEntity.ok(policeDetailsOptional.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updatePolice(
+            @PathVariable Long id,
+            @RequestBody PoliceDetails updatedDetails) {
+        try {
+            boolean isUpdated = policeDetailsService.updatePoliceDetails(id, updatedDetails);
+            if (isUpdated) {
+                return ResponseEntity.ok("Police details updated successfully!");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Police officer not found with ID: " + id);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating police details: " + e.getMessage());
         }
     }
 

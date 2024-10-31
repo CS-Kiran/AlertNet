@@ -1,5 +1,6 @@
 package com.alertnet.backend.controller;
 
+import com.alertnet.backend.model.PoliceDetails;
 import com.alertnet.backend.model.UserDetails;
 import com.alertnet.backend.service.UserDetailsService;
 import com.alertnet.backend.util.JwtUtil;
@@ -81,6 +82,22 @@ public class UserDetailsController {
             return ResponseEntity.ok(userDetailsOptional.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updatePolice(
+            @PathVariable Long id,
+            @RequestBody PoliceDetails updatedDetails) {
+        try {
+            boolean isUpdated = userDetailsService.updateCitizenDetails(id, updatedDetails);
+            if (isUpdated) {
+                return ResponseEntity.ok("Citizen details updated successfully!");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Citizen officer not found with ID: " + id);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating police details: " + e.getMessage());
         }
     }
 
