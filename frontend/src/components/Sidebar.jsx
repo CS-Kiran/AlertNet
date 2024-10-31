@@ -42,7 +42,13 @@ const Sidebar = ({ role }) => {
   return (
     <div className="h-screen w-72 bg-gradient-to-b from-blue-700 to-blue-600 text-slate-50 fixed shadow-lg">
       <div className="text-center p-6 text-3xl font-bold tracking-wider border-blue-500 transition-all hover:scale-110 duration-300">
-        {userInfo ? `Welcome ${userInfo.username.charAt(0).toUpperCase() + userInfo.username.slice(1)}` : `${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard`}
+        <p>Welcome</p>
+        {userInfo
+          ? `${
+              userInfo.username.charAt(0).toUpperCase() +
+              userInfo.username.slice(1)
+            }`
+          : `${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard`}
       </div>
       <nav className="mt-10 ml-2 space-y-2">
         {links.map((link) => (

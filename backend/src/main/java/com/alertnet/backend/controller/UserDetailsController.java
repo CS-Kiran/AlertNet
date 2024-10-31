@@ -2,7 +2,14 @@ package com.alertnet.backend.controller;
 
 import com.alertnet.backend.model.UserDetails;
 import com.alertnet.backend.service.UserDetailsService;
+import com.alertnet.backend.util.JwtUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,4 +26,52 @@ public class UserDetailsController {
         userDetailsService.saveUser(userDetails);
         return ResponseEntity.ok("User registered successfully");
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> userLogin(@RequestBody Map<String, String> loginRequest) {
+        String email = loginRequest.get("email");
+        String password = loginRequest.get("password");
+
+        Map<String, String> response = new HashMap<>();
+
+        // Fetch user details by email first
+        Optional<UserDetails> userDetailsOptional = userDetailsService.findByEmail(email);
+
+        if (userDetailsOptional.isPresent()) {
+            UserDetails userDetails = userDetailsOptional.get();
+            String accountStatus = userDetails.getAccountStatus();
+            Long userId = userDetails.getId();
+            String userName = userDetails.getName();
+
+            // Include account status in the response
+            response.put("accountStatus", accountStatus);
+
+            // Only allow login if the account is activated
+            if (!"activated".equalsIgnoreCase(accountStatus)) {
+                response.put("message", "Account not activated. Please contact admin.");
+                return ResponseEntity.status(200).body(response);
+            }
+
+            if (userDetails.getPassword().equals(password)) {
+                // Generate JWT token with user ID and name
+                String token = JwtUtil.generateToken(userId, userName);
+
+                response.put("message", "Login successful!");
+                response.put("userId", String.valueOf(userId)); // Send userId as a string
+                response.put("userName", userName);
+                response.put("token", token); // Include JWT token
+
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "Invalid email or password.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+        } else {
+            response.put("message", "Email not found.");
+            response.put("accountStatus", "not-registered");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+
 }

@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { MdClose } from "react-icons/md";
 import { decodeJwt } from "../utility/decodeJwt";
+import UpdateAlert from "./UpdateAlert";
 
-const ViewAlert = () => {
+const ManageAlert = () => {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,6 +12,8 @@ const ViewAlert = () => {
   const [filter, setFilter] = useState("all");
   const [showPoliceAlerts, setShowPoliceAlerts] = useState(false);
   const [showPoliceID, setShowPoliceID] = useState();
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [alertToUpdate, setAlertToUpdate] = useState(null);
 
   const tokenKey = "policeToken";
 
@@ -18,7 +21,7 @@ const ViewAlert = () => {
     const token = localStorage.getItem(tokenKey);
     if (token) {
       try {
-        const decoded = decodeJwt(token); // Use the custom decode function
+        const decoded = decodeJwt(token);
         setShowPoliceID(decoded);
       } catch (error) {
         console.error("Failed to decode token:", error);
@@ -33,7 +36,7 @@ const ViewAlert = () => {
           "http://localhost:8080/api/alerts/all"
         );
         setAlerts(response.data);
-        console.log(response.data)
+        console.log(response.data);
       } catch (err) {
         setError(err.response ? err.response.data : err.message);
       } finally {
@@ -56,6 +59,16 @@ const ViewAlert = () => {
     setFilter(filterType);
   };
 
+  const handleUpdateAlert = (alert) => {
+    setAlertToUpdate(alert);
+    setShowUpdateForm(true);
+  };
+
+  const closeUpdateForm = () => {
+    setShowUpdateForm(false);
+    setAlertToUpdate(null);
+  };
+
   if (loading) {
     return <div className="text-center">Loading alerts...</div>;
   }
@@ -75,7 +88,8 @@ const ViewAlert = () => {
       (filter === "missing" && alert.type.toLowerCase() === "missing") ||
       (filter === "wanted" && alert.type.toLowerCase() === "wanted");
 
-    const matchesPoliceId = !showPoliceAlerts || (showPoliceID && alert.policeId === showPoliceID.id);
+    const matchesPoliceId =
+      !showPoliceAlerts || (showPoliceID && alert.policeId === showPoliceID.id);
 
     return matchesType && matchesPoliceId;
   });
@@ -165,12 +179,23 @@ const ViewAlert = () => {
                 {alert.caseStatus.toUpperCase()}
               </span>
             </p>
-            <button
-              className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
-              onClick={() => openPopup(alert.alertId)}
-            >
-              View Details
-            </button>
+            <div className="flex justify-between font-semibold">
+              {alert.policeId === showPoliceID.id && (
+                <button
+                  className="mt-4 bg-yellow-500 text-gray-800 py-2 px-4 rounded hover:bg-yellow-600 transition duration-200"
+                  onClick={() => handleUpdateAlert(alert)}
+                >
+                  Update Alert
+                </button>
+              )}
+
+              <button
+                className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
+                onClick={() => openPopup(alert.alertId)}
+              >
+                View Details
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -304,8 +329,12 @@ const ViewAlert = () => {
           </div>
         </div>
       )}
+
+      {showUpdateForm && (
+        <UpdateAlert alert={alertToUpdate} onClose={closeUpdateForm} onUpdate={handleUpdateAlert}/>
+      )}
     </div>
   );
 };
 
-export default ViewAlert;
+export default ManageAlert;

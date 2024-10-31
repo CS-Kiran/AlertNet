@@ -9,6 +9,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminUsers from "./pages/AdminUsers";
 import PoliceDashboard from "./pages/PoliceDashboard";
 import Database from "./pages/Database";
+import CitizenDashboard from "./pages/CitizenDashboard";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/register_citizen" element={<CitizenRegistration />} />
           <Route path="/register_police" element={<PoliceRegistration />} />
           <Route path="/police/*" element={<PoliceDashboard />} />
+          <Route path="/citizen/*" element={<CitizenDashboard />} />
           <Route path="/database" element={<Database />} />
           <Route path="/learn-more" element={<LearnMore />} />
         </Routes>

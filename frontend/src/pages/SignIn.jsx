@@ -14,7 +14,7 @@ export default function SignIn() {
     e.preventDefault();
 
     const endpoint = isCitizenLogin 
-      ? "http://localhost:8080/api/citizen/login" 
+      ? "http://localhost:8080/api/citizens/login" 
       : "http://localhost:8080/api/police/login";
 
     const tokenKey = isCitizenLogin ? "citizenToken" : "policeToken";

@@ -24,6 +24,9 @@ public class UserDetails {
 
     @Column(nullable = false)
     private String address;
+    
+    @Column(name = "account_status", nullable = false, columnDefinition = "varchar(255) default 'activated' ")
+    private String accountStatus;
 
     // Constructors
     public UserDetails() {}
@@ -34,6 +37,7 @@ public class UserDetails {
         this.password = password;
         this.phone = phone;
         this.address = address;
+        this.accountStatus = "activated";
     }
 
     // Getters and Setters
@@ -83,5 +87,13 @@ public class UserDetails {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+    
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
     }
 }

@@ -1,20 +1,22 @@
 import { Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import BroadcastAlert from "../components/BroadcastAlert";
-import ViewAlert from "../components/ViewAlert";
+import ManageAlert from "../components/ManageAlert";
+import UpdateAlert from "../components/UpdateAlert";
 
 export default function PoliceDashboard() {
-    const role = "police";
+  const role = "police";
 
-    return (
-        <div className="flex">
+  return (
+    <div className="flex">
       <Sidebar role={role} />
       <div className="flex-grow p-6 ml-72 bg-slate-50 min-h-screen">
         <Routes>
-          <Route path="alerts" element={<BroadcastAlert/>} />
-          <Route path="manage-alerts" element={<ViewAlert/>} />
+          <Route path="alerts" element={<BroadcastAlert />} />
+          <Route path="manage-alerts" element={<ManageAlert />} />
+          <Route path="update-alerts" element={<UpdateAlert />} />
         </Routes>
       </div>
     </div>
-    )
+  );
 }
