@@ -129,18 +129,22 @@ public class AlertController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-
-
-    // API to view alerts based on police_id
-    @GetMapping("/api/alerts/police/{policeId}")
-    public ResponseEntity<?> getAlertsByPoliceId(@PathVariable Long policeId) {
+    
+    @PutMapping("/update/{alertId}")
+    public ResponseEntity<String> updateAlert(
+            @PathVariable Long alertId,
+            @RequestBody Alert updatedAlertDetails) {
         try {
-            List<Alert> alerts = alertService.findAlertsByPoliceId(policeId); // This should return alerts by police ID
-            return ResponseEntity.ok(alerts);
+            boolean isUpdated = alertService.updateAlertDetails(alertId, updatedAlertDetails);
+            if (isUpdated) {
+                return ResponseEntity.ok("Alert details updated successfully!");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Alert not found with ID: " + alertId);
+            }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching alerts: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating alert details: " + e.getMessage());
         }
     }
 
+    
 }

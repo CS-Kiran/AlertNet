@@ -1,6 +1,7 @@
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const UpdateAlert = ({ alert , onClose , onUpdate}) => {
+const UpdateAlert = ({ alert, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
     type: "",
     name: "",
@@ -15,7 +16,6 @@ const UpdateAlert = ({ alert , onClose , onUpdate}) => {
     lastSeenDate: "",
     healthCondition: "",
     caseID: "",
-    dateOfReport: "",
     caseStatus: "",
     contactName: "",
     contactPhone: "",
@@ -26,50 +26,54 @@ const UpdateAlert = ({ alert , onClose , onUpdate}) => {
   });
 
   useEffect(() => {
-    setFormData({
-      type: alert.type || "",
-      name: alert.name || "",
-      description: alert.description || "",
-      age: alert.age || "",
-      gender: alert.gender || "",
-      height: alert.height || "",
-      weight: alert.weight || "",
-      eyeColor: alert.eyeColor || "",
-      hairColor: alert.hairColor || "",
-      lastSeenLocation: alert.lastSeenLocation || "",
-      lastSeenDate: alert.lastSeenDate || "",
-      caseID: alert.caseID || "",
-      dateOfReport: alert.dateOfReport || "",
-      caseStatus: alert.caseStatus || "",
-      contactName: alert.contactName || "",
-      contactPhone: alert.contactPhone || "",
-      secondaryContactName: alert.secondaryContactName || "",
-      secondaryContactPhone: alert.secondaryContactPhone || "",
-      crimeCommitted: alert.crimeCommitted || "",
-      dangerLevel: alert.dangerLevel || "",
-    });
+    if (alert) {
+      setFormData({
+        type: alert.type || "",
+        name: alert.name || "",
+        description: alert.description || "",
+        age: alert.age || "",
+        gender: alert.gender || "",
+        height: alert.height || "",
+        weight: alert.weight || "",
+        eyeColor: alert.eyeColor || "",
+        hairColor: alert.hairColor || "",
+        lastSeenLocation: alert.lastSeenLocation || "",
+        lastSeenDate: alert.lastSeenDate || "",
+        caseID: alert.caseID || "",
+        caseStatus: alert.caseStatus || "",
+        contactName: alert.contactName || "",
+        contactPhone: alert.contactPhone || "",
+        secondaryContactName: alert.secondaryContactName || "",
+        secondaryContactPhone: alert.secondaryContactPhone || "",
+        crimeCommitted: alert.crimeCommitted || "",
+        dangerLevel: alert.dangerLevel || "",
+      });
+    }
   }, [alert]);
 
-  console.log(formData)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  console.log(formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/alerts/${alert.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axios.put(
+        `http://localhost:8080/api/alerts/update/${alert.alertId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      if (response.ok) {
+      if (response.status === 200) {
         console.log("Alert updated successfully");
         onUpdate();
+        onClose();
       } else {
         console.error("Failed to update alert");
       }

@@ -45,7 +45,7 @@ const ManageAlert = () => {
     };
 
     fetchAlerts();
-  }, []);
+  }, [showUpdateForm]);
 
   const openPopup = (alertId) => {
     setExpandedAlert(alertId);
@@ -169,13 +169,7 @@ const ManageAlert = () => {
             <p className="text-gray-600">Last Seen: {alert.lastSeenDate}</p>
             <p className="text-gray-600">
               Status:
-              <span
-                className={`font-bold ${
-                  alert.caseStatus === "open"
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
-              >
+              <span className={`font-bold ${alert.caseStatus === "open" ? "text-green-600" : alert.caseStatus === "in-progress" ? "text-yellow-600" : "text-red-600"}`}>
                 {alert.caseStatus.toUpperCase()}
               </span>
             </p>

@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -71,5 +72,44 @@ public class AlertService {
     public List<Alert> findAlertsByPoliceId(Long policeId) {
         return alertRepository.findByPoliceId(policeId); // This method retrieves alerts by police ID
     }
+    
+    
+    public boolean updateAlertDetails(Long alertId, Alert updatedAlertDetails) {
+        Optional<Alert> existingAlertOptional = alertRepository.findById(alertId);
+        if (existingAlertOptional.isPresent()) {
+            Alert existingAlert = existingAlertOptional.get();
+
+            existingAlert.setType(updatedAlertDetails.getType());
+            existingAlert.setName(updatedAlertDetails.getName());
+            existingAlert.setDescription(updatedAlertDetails.getDescription());
+            existingAlert.setAge(updatedAlertDetails.getAge());
+            existingAlert.setGender(updatedAlertDetails.getGender());
+            existingAlert.setHeight(updatedAlertDetails.getHeight());
+            existingAlert.setWeight(updatedAlertDetails.getWeight());
+            existingAlert.setEyeColor(updatedAlertDetails.getEyeColor());
+            existingAlert.setHairColor(updatedAlertDetails.getHairColor());
+            existingAlert.setLastSeenLocation(updatedAlertDetails.getLastSeenLocation());
+            existingAlert.setLastSeenDate(updatedAlertDetails.getLastSeenDate());
+            existingAlert.setCaseStatus(updatedAlertDetails.getCaseStatus());
+            existingAlert.setCaseID(updatedAlertDetails.getCaseID());
+            existingAlert.setContactName(updatedAlertDetails.getContactName());
+            existingAlert.setContactPhone(updatedAlertDetails.getContactPhone());
+            existingAlert.setSecondaryContactName(updatedAlertDetails.getSecondaryContactName());
+            existingAlert.setSecondaryContactPhone(updatedAlertDetails.getSecondaryContactPhone());
+
+            if ("wanted".equalsIgnoreCase(updatedAlertDetails.getType())) {
+                
+                existingAlert.setDangerLevel(updatedAlertDetails.getDangerLevel());
+                existingAlert.setCrimeCommitted(updatedAlertDetails.getCrimeCommitted());
+                }
+
+            // Save the updated alert details
+            alertRepository.save(existingAlert);
+            return true;
+        }
+        return false;
+    }
+
+
 
 }
