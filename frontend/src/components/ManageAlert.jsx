@@ -163,17 +163,26 @@ const ManageAlert = () => {
             <h3 className="text-xl font-bold text-blue-700 mt-2">
               {alert.name}
             </h3>
-            <p className="text-gray-700 mt-1">
-              Description: {alert.description}
+            <p className="text-gray-700">
+              <strong>Description : </strong> {alert.description}
             </p>
-            <p className="text-gray-600">Last Seen: {alert.lastSeenDate}</p>
-            <p className="text-gray-600">
+            <p className="text-gray-700">
+              <strong>Last Seen : </strong> {alert.lastSeenDate}
+            </p>
+            <p className="text-gray-700 font-bold">
               Status:
               <span className={`font-bold ${alert.caseStatus === "open" ? "text-green-600" : alert.caseStatus === "in-progress" ? "text-yellow-600" : "text-red-600"}`}>
                 {alert.caseStatus.toUpperCase()}
               </span>
             </p>
             <div className="flex justify-between font-semibold">
+              <button
+                className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
+                onClick={() => openPopup(alert.alertId)}
+              >
+                View Details
+              </button>
+
               {alert.policeId === showPoliceID.id && (
                 <button
                   className="mt-4 bg-yellow-500 text-gray-800 py-2 px-4 rounded hover:bg-yellow-600 transition duration-200"
@@ -183,12 +192,6 @@ const ManageAlert = () => {
                 </button>
               )}
 
-              <button
-                className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
-                onClick={() => openPopup(alert.alertId)}
-              >
-                View Details
-              </button>
             </div>
           </div>
         ))}
