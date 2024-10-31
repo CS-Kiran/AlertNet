@@ -103,46 +103,46 @@ const ManageAlert = () => {
 
   return (
     <div className="mx-auto">
-      <h2 className="text-5xl font-bold text-center mb-6 text-blue-700">
-        All Alerts
+      <h2 className="text-5xl font-bold text-center mb-10 text-blue-700">
+        Alert&apos;s
       </h2>
-
-      <div className="flex justify-center items-center mb-4">
-        <label className="mr-2 text-gray-700">Show My Alerts Only</label>
-        <input
-          type="checkbox"
-          checked={showPoliceAlerts}
-          onChange={toggleShowPoliceAlerts}
-          className="toggle-checkbox"
-        />
-      </div>
-
-      {/* Filter Options */}
-      <div className="flex justify-center mb-4">
-        <button
-          className={`py-2 px-4 mx-2 rounded ${
-            filter === "all" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
-          onClick={() => handleFilterChange("all")}
-        >
-          All
-        </button>
-        <button
-          className={`py-2 px-4 mx-2 rounded ${
-            filter === "missing" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
-          onClick={() => handleFilterChange("missing")}
-        >
-          Missing
-        </button>
-        <button
-          className={`py-2 px-4 mx-2 rounded ${
-            filter === "wanted" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
-          onClick={() => handleFilterChange("wanted")}
-        >
-          Wanted
-        </button>
+      <div className="flex justify-between items-center mb-6">
+        {/* Filter Options */}
+        <div>
+          <button
+            className={`py-2 px-4 mx-2 rounded ${
+              filter === "all" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => handleFilterChange("all")}
+          >
+            All
+          </button>
+          <button
+            className={`py-2 px-4 mx-2 rounded ${
+              filter === "missing" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => handleFilterChange("missing")}
+          >
+            Missing
+          </button>
+          <button
+            className={`py-2 px-4 mx-2 rounded ${
+              filter === "wanted" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => handleFilterChange("wanted")}
+          >
+            Wanted
+          </button>
+        </div>
+        <div>
+          <label className="mr-2 text-gray-700">Show My Alerts Only</label>
+          <input
+            type="checkbox"
+            checked={showPoliceAlerts}
+            onChange={toggleShowPoliceAlerts}
+            className="toggle-checkbox"
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -171,7 +171,15 @@ const ManageAlert = () => {
             </p>
             <p className="text-gray-700 font-bold">
               Status:
-              <span className={`font-bold ${alert.caseStatus === "open" ? "text-green-600" : alert.caseStatus === "in-progress" ? "text-yellow-600" : "text-red-600"}`}>
+              <span
+                className={`font-bold ${
+                  alert.caseStatus === "open"
+                    ? "text-green-600"
+                    : alert.caseStatus === "in-progress"
+                    ? "text-yellow-600"
+                    : "text-red-600"
+                }`}
+              >
                 {alert.caseStatus.toUpperCase()}
               </span>
             </p>
@@ -191,7 +199,6 @@ const ManageAlert = () => {
                   Update Alert
                 </button>
               )}
-
             </div>
           </div>
         ))}
@@ -328,7 +335,11 @@ const ManageAlert = () => {
       )}
 
       {showUpdateForm && (
-        <UpdateAlert alert={alertToUpdate} onClose={closeUpdateForm} onUpdate={handleUpdateAlert}/>
+        <UpdateAlert
+          alert={alertToUpdate}
+          onClose={closeUpdateForm}
+          onUpdate={handleUpdateAlert}
+        />
       )}
     </div>
   );
