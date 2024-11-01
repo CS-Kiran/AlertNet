@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.alertnet.backend.model.QuickReport;
 import com.alertnet.backend.repository.QuickReportRepository;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class QuickReportService {
@@ -38,5 +40,9 @@ public class QuickReportService {
         image.transferTo(imageFile);  // This will save the file
 
         return imageFile.getAbsolutePath();
+    }
+    
+    public List<QuickReport> findAllQuickAlerts() {
+        return quickReportRepository.findAll();
     }
 }

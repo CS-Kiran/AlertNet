@@ -7,6 +7,7 @@ import UpdateAlert from "../components/UpdateAlert";
 import axios from "axios";
 import {decodeJwt} from "../utility/decodeJwt"; // Ensure this imports your JWT decoder
 import Profile from "../components/Profile";
+import ViewQuickReports from "../components/ViewQuickReports";
 
 export default function PoliceDashboard() {
   const role = "police";
@@ -63,6 +64,7 @@ export default function PoliceDashboard() {
           <Route path="alerts" element={<BroadcastAlert />} />
           <Route path="manage-alerts" element={<ManageAlert />} />
           <Route path="update-alerts" element={<UpdateAlert />} />
+          <Route path="reports" element={<ViewQuickReports />} />
           <Route path="dashboard" element={<Profile role={role} userDetails={userDetails} onEditProfile={handleEditProfile} />} />
         </Routes>
       </div>
