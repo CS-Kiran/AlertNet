@@ -2,13 +2,17 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
+import QuickReport from "../components/QuickReport";
 
 const Database = () => {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedAlert, setExpandedAlert] = useState(null);
-  const [filter, setFilter] = useState("missing"); // default to "missing"
+  const [filter, setFilter] = useState("missing");
+  const [showQuickReport, setShowQuickReport] = useState(false); 
+  const openQuickReport = () => setShowQuickReport(true); // Function to show QuickReport
+  const closeQuickReport = () => setShowQuickReport(false); // Function to close QuickReport
 
   useEffect(() => {
     const fetchAlerts = async () => {
@@ -77,6 +81,12 @@ const Database = () => {
         </svg>
       </Link>
 
+      <div className="absolute top-6 right-6">
+      <button onClick={openQuickReport} className="px-6 py-2 bg-green-600 text-white rounded-full font-bold shadow-md transition-transform transform duration-300 hover:scale-105">
+          Quick Report {" >>" }
+        </button>
+      </div>
+
       {/* Filter Buttons */}
       <div className="flex justify-center mb-10 space-x-4">
         {["missing", "wanted"].map((type) => (
@@ -129,6 +139,8 @@ const Database = () => {
           </div>
         ))}
       </div>
+
+      {showQuickReport && <QuickReport onClose={closeQuickReport} />}
 
       {/* Popup Window for Expanded Alert */}
       {expandedAlert && (

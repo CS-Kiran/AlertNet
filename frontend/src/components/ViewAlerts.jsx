@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { MdClose } from "react-icons/md";
+import QuickReport from "./QuickReport";
 
 const ViewAlerts = () => {
   const [alerts, setAlerts] = useState([]);
@@ -8,6 +9,8 @@ const ViewAlerts = () => {
   const [error, setError] = useState(null);
   const [expandedAlert, setExpandedAlert] = useState(null);
   const [filter, setFilter] = useState("missing");
+  const [showQuickReport, setShowQuickReport] = useState(false); // State to control QuickReport visibility
+
 
   useEffect(() => {
     const fetchAlerts = async () => {
@@ -28,6 +31,9 @@ const ViewAlerts = () => {
   const openPopup = (alert) => setExpandedAlert(alert);
   const closePopup = () => setExpandedAlert(null);
   const handleFilterChange = (filterType) => setFilter(filterType);
+  const openQuickReport = () => setShowQuickReport(true); // Function to show QuickReport
+  const closeQuickReport = () => setShowQuickReport(false); // Function to close QuickReport
+
 
   const filteredAlerts = alerts.filter((alert) =>
     filter === "missing"
@@ -69,10 +75,9 @@ const ViewAlerts = () => {
 
   return (
     <div className="max-h-screen">
-      <div className="absolute top-4 right-6">
-        <button className="px-6 py-2 rounded-full font-bold shadow-md transition-all transform duration-300 hover:scale-105 bg-green-600 text-white hover:shadow-xl hover:bg-green-700">
-          {" "}
-          Quick Report{" >> "}
+       <div className="absolute top-6 right-6">
+        <button onClick={openQuickReport} className="px-6 py-2 bg-green-600 text-white rounded-full font-bold shadow-md transition-transform transform duration-300 hover:scale-105">
+          Quick Report {" >>" }
         </button>
       </div>
       {/* Filter Buttons */}
@@ -134,6 +139,8 @@ const ViewAlerts = () => {
                 className={`font-bold ${
                   alert.caseStatus === "open"
                     ? "text-green-600"
+                    : alert.caseStatus === "in-progress"
+                    ? "text-yellow-600"
                     : "text-red-600"
                 }`}
               >
@@ -147,6 +154,8 @@ const ViewAlerts = () => {
           </div>
         ))}
       </div>
+
+      {showQuickReport && <QuickReport onClose={closeQuickReport} />}
 
       {/* Popup Window for Expanded Alert */}
       {expandedAlert && (
