@@ -4,8 +4,9 @@ import Sidebar from "../components/Sidebar";
 import ViewAlerts from "../components/ViewAlerts";
 import Profile from "../components/Profile";
 import axios from "axios";
-import {decodeJwt} from "../utility/decodeJwt";
+import { decodeJwt } from "../utility/decodeJwt";
 import SubmittedReports from "../components/SubmittedReports";
+import Queries from "../components/Queries";
 
 export default function CitizenDashboard() {
   const role = "citizen";
@@ -15,6 +16,10 @@ export default function CitizenDashboard() {
 
   const token = localStorage.getItem("citizenToken");
 
+  const decoded = decodeJwt(token);
+  const citizenId = decoded.id;
+  const citizenName = decoded.username;
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (token) {
@@ -22,7 +27,9 @@ export default function CitizenDashboard() {
           const decoded = decodeJwt(token);
           const citizenId = decoded.id;
 
-          const response = await axios.get(`http://localhost:8080/api/citizens/${citizenId}`);
+          const response = await axios.get(
+            `http://localhost:8080/api/citizens/${citizenId}`
+          );
 
           setUserDetails(response.data);
           console.log(response.data);
@@ -59,9 +66,22 @@ export default function CitizenDashboard() {
       <Sidebar role={role} />
       <div className="flex-grow p-6 ml-72 bg-slate-50 min-h-screen">
         <Routes>
-          <Route path="dashboard" element={<Profile role={"citizens"} userDetails={userDetails} onEditProfile={handleEditProfile} />} />
+          <Route
+            path="dashboard"
+            element={
+              <Profile
+                role={"citizens"}
+                userDetails={userDetails}
+                onEditProfile={handleEditProfile}
+              />
+            }
+          />
           <Route path="view-alerts" element={<ViewAlerts />} />
           <Route path="reports" element={<SubmittedReports />} />
+          <Route
+            path="queries"
+            element={<Queries Id={citizenId} Name={citizenName} Role={role}/>}
+          />
         </Routes>
       </div>
     </div>

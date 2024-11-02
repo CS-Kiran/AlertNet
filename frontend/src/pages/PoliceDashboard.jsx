@@ -5,9 +5,10 @@ import BroadcastAlert from "../components/BroadcastAlert";
 import ManageAlert from "../components/ManageAlert";
 import UpdateAlert from "../components/UpdateAlert";
 import axios from "axios";
-import {decodeJwt} from "../utility/decodeJwt";
+import { decodeJwt } from "../utility/decodeJwt";
 import Profile from "../components/Profile";
 import Reports from "./Reports";
+import Queries from "../components/Queries";
 
 export default function PoliceDashboard() {
   const role = "police";
@@ -17,6 +18,10 @@ export default function PoliceDashboard() {
 
   const token = localStorage.getItem("policeToken");
 
+  const decoded = decodeJwt(token);
+  const policeId = decoded.id;
+  const policeName = decoded.username;
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (token) {
@@ -24,10 +29,11 @@ export default function PoliceDashboard() {
           const decoded = decodeJwt(token);
           const policeId = decoded.id;
 
-          const response = await axios.get(`http://localhost:8080/api/police/${policeId}`);
+          const response = await axios.get(
+            `http://localhost:8080/api/police/${policeId}`
+          );
           setUserDetails(response.data);
           console.log(response.data);
-          
         } catch (error) {
           console.error("Error fetching user details:", error);
           setError("Failed to fetch user details");
@@ -65,7 +71,20 @@ export default function PoliceDashboard() {
           <Route path="manage-alerts" element={<ManageAlert />} />
           <Route path="update-alerts" element={<UpdateAlert />} />
           <Route path="reports" element={<Reports />} />
-          <Route path="dashboard" element={<Profile role={role} userDetails={userDetails} onEditProfile={handleEditProfile} />} />
+          <Route
+            path="dashboard"
+            element={
+              <Profile
+                role={role}
+                userDetails={userDetails}
+                onEditProfile={handleEditProfile}
+              />
+            }
+          />
+          <Route
+            path="queries"
+            element={<Queries Id={policeId} Name={policeName} Role={role}/>}
+          />
         </Routes>
       </div>
     </div>
