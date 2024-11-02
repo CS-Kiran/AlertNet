@@ -3,7 +3,7 @@ import axios from "axios";
 import { MdClose } from "react-icons/md";
 import { decodeJwt } from "../utility/decodeJwt";
 import QuickReport from "./QuickReport";
-import Reports from "../pages/Reports";
+import DetailedReport from "../components/DetailedReport";
 
 const ViewAlerts = () => {
   const [alerts, setAlerts] = useState([]);
@@ -157,7 +157,7 @@ const ViewAlerts = () => {
       </div>
 
       {showReportsModal && (
-        <Reports
+        <DetailedReport
           onClose={closeReportsModal}
           alertId={selectedAlert.alertId}
           citizenId={citizenId}

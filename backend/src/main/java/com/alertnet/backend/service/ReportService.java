@@ -8,7 +8,6 @@ import com.alertnet.backend.repository.AlertRepository;
 import com.alertnet.backend.repository.PoliceDetailsRepository;
 import com.alertnet.backend.repository.ReportRepository;
 import com.alertnet.backend.repository.UserDetailsRepository;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -85,4 +84,20 @@ public class ReportService {
         report.setImagePaths(imagePaths);
         return reportRepository.save(report);
     }
+
+    // Method to retrieve all reports
+    public List<Report> getAllReports() {
+        return reportRepository.findAll();
+    }
+
+    // Method to retrieve reports by citizen ID
+    public List<Report> getReportsByCitizenId(Long citizenId) {
+        return reportRepository.findByCitizenId(citizenId); // Implement this method in ReportRepository
+    }
+
+    // Method to retrieve reports by police ID
+    public List<Report> getReportsByPoliceId(Long policeId) {
+        return reportRepository.findByPoliceId(policeId); // Implement this method in ReportRepository
+    }
+
 }

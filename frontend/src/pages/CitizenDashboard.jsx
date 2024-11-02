@@ -5,6 +5,7 @@ import ViewAlerts from "../components/ViewAlerts";
 import Profile from "../components/Profile";
 import axios from "axios";
 import {decodeJwt} from "../utility/decodeJwt";
+import SubmittedReports from "../components/SubmittedReports";
 
 export default function CitizenDashboard() {
   const role = "citizen";
@@ -60,6 +61,7 @@ export default function CitizenDashboard() {
         <Routes>
           <Route path="dashboard" element={<Profile role={"citizens"} userDetails={userDetails} onEditProfile={handleEditProfile} />} />
           <Route path="view-alerts" element={<ViewAlerts />} />
+          <Route path="reports" element={<SubmittedReports />} />
         </Routes>
       </div>
     </div>

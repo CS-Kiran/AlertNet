@@ -161,7 +161,7 @@ const ManageAlert = () => {
               />
             )}
             <h3 className="text-xl font-bold text-blue-700 mt-2">
-              {alert.name}
+            {alert.alertId} : {alert.name}
             </h3>
             <p className="text-gray-700">
               <strong>Description : </strong> {alert.description}

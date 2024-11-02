@@ -1,79 +1,226 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { MdClose } from "react-icons/md";
+import { MdImage } from "react-icons/md";
+import { decodeJwt } from "../utility/decodeJwt";
+import DetailModal from "../components/DetailModal";
+import ViewQuickReports from "../components/ViewQuickReports";
 
-const Reports = ({ onClose, alertId, citizenId, policeId }) => {
-  const [images, setImages] = useState([]);
-  const [message, setMessage] = useState(""); // State for message input
-  const [error, setError] = useState(null);
+const Reports = () => {
+  const token = localStorage.getItem("policeToken");
+  const decoded = decodeJwt(token);
+  const police_Id = decoded.id;
 
-  const handleFileChange = (e) => {
-    setImages([...e.target.files]);
+  const [reports, setReports] = useState([]);
+  const [filteredReports, setFilteredReports] = useState([]);
+  const [policeId, setPoliceId] = useState(police_Id);
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [showQuickReportsModal, setShowQuickReportsModal] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedReportId, setSelectedReportId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedDetails, setSelectedDetails] = useState({});
+  const [modalTitle, setModalTitle] = useState("");
+
+  const handleViewQuickReports = () => {
+    setShowQuickReportsModal(true);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("alertId", alertId);
-    formData.append("citizenId", citizenId);
-    formData.append("policeId", policeId);
-    
-    // Append each file to the 'images' key
-    images.forEach((file) => formData.append("images", file)); // Change here
-  
-    formData.append("message", message);
-  
+  const handleCloseQuickReportsModal = () => {
+    setShowQuickReportsModal(false);
+  };
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  const fetchReports = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/api/reports/create", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert("Report submitted successfully!");
-      onClose();
-    } catch (err) {
-      setError(err.response ? err.response.data : "Error submitting report");
+      const response = await axios.get("http://localhost:8080/api/reports/all");
+      console.log(response.data);
+      setReports(response.data);
+      setFilteredReports(response.data);
+    } catch (error) {
+      console.error("Error fetching reports:", error);
     }
   };
-  
+
+  const handleFilterToggle = () => {
+    setIsFiltered(!isFiltered);
+    if (!isFiltered) {
+      setFilteredReports(
+        reports.filter((report) => report.police.id === policeId)
+      );
+    } else {
+      setFilteredReports(reports);
+    }
+  };
+
+  const handleShowImages = (images, reportId) => {
+    setSelectedImages(images);
+    setSelectedReportId(reportId);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedImages([]);
+    setSelectedReportId(null);
+  };
+
+  const handleDownloadAllImages = async () => {
+    if (!selectedReportId) return;
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/reports/images/${selectedReportId}`,
+        {
+          responseType: "blob",
+        }
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `report_${selectedReportId}_images.zip`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading all images:", error);
+    }
+  };
+
+  const handleOpenDetailModal = (report) => {
+    if (report.alert) {
+      setSelectedDetails(report.alert);
+      setModalTitle("Alert Details");
+    } else if (report.citizen) {
+      setSelectedDetails(report.citizen);
+      setModalTitle("Citizen Details");
+    } else {
+      console.error("No details available for this report.");
+      return; // Exit if no valid details are found
+    }
+    setShowDetailModal(true);
+  };
+
+  const handleCloseDetailModal = () => {
+    setShowDetailModal(false);
+    setSelectedDetails({});
+  };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-        <h2 className="text-2xl font-semibold mb-4">Submit Report</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <label className="block mb-2 font-semibold">Upload Images:</label>
-          <input type="file" multiple onChange={handleFileChange} className="mb-4" />
-          <label className="block mb-2 font-semibold">Message:</label>
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            rows="4"
-            className="border rounded w-full p-2 mb-4"
-            placeholder="Enter your message here..."
+    <div className="p-4">
+      <h1 className="text-5xl text-center text-blue-600 font-bold mb-4">
+        Reports
+      </h1>
+      <div className="mb-4 flex justify-between items-center">
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            checked={isFiltered}
+            onChange={handleFilterToggle}
+            className="mr-2"
           />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white py-2 px-4 rounded w-full hover:bg-blue-700"
-          >
-            Submit Report
-          </button>
-        </form>
+          Filter by my Police ID
+        </label>
+        <button
+          className="bg-green-600 text-white px-4 py-2 rounded mr-4"
+          onClick={handleViewQuickReports}
+        >
+          View Quick Reports
+        </button>
       </div>
+
+      {/* Quick Reports Modal */}
+      <ViewQuickReports
+        isOpen={showQuickReportsModal}
+        onClose={handleCloseQuickReportsModal}
+      />
+      <div className="overflow-auto rounded-lg shadow-lg">
+        <table className="min-w-full bg-white border border-gray-300">
+          <thead className="bg-blue-600 text-white">
+            <tr>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">Alert ID</th>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">Citizen ID</th>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">Message</th>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">Images</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredReports.map((report) => (
+              <tr key={report.id} className="hover:bg-gray-100 border-b border-gray-300 text-center font-semibold">
+                <td className="py-2 border-b text-center cursor-pointer">
+                  <p
+                    onClick={() => handleOpenDetailModal(report)} // Pass the entire report object
+                  >
+                    {report.alert.alertId}
+                  </p>
+                </td>
+                <td className="py-2 border-b text-center cursor-pointer">
+                  <p
+                    onClick={() => handleOpenDetailModal(report)} // Pass the entire report object
+                  >
+                    {report.citizen.id}
+                  </p>
+                </td>
+                <td className="py-2 border-b text-center">{report.message}</td>
+                <td className="py-2 border-b text-center">
+                  <div
+                    onClick={() =>
+                      handleShowImages(report.imagePaths, report.alert.alertId)
+                    }
+                    className="cursor-pointer"
+                  >
+                    <MdImage className="w-6 h-6 text-blue-600 mx-auto" />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-75">
+          <div className="bg-white rounded-lg shadow-lg p-6 relative">
+            <MdClose
+              className="absolute top-2 right-2 w-6 h-6 cursor-pointer text-gray-700"
+              onClick={handleCloseModal}
+            />
+            <h2 className="text-lg font-bold mb-4">Images</h2>
+            <ul>
+              {selectedImages.map((imagePath, index) => {
+                const fileName = imagePath.split("/").pop();
+                return (
+                  <li key={index} className="mb-2">
+                    <a
+                      href={`http://localhost:8080/api/reports/download/${selectedReportId}/${fileName}`}
+                      download
+                      className="text-blue-600 underline"
+                    >
+                      {fileName}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+            <button
+              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+              onClick={handleDownloadAllImages}
+            >
+              Download All Images
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Detail Modal for Citizen or Alert Details */}
+      <DetailModal
+        isOpen={showDetailModal}
+        onClose={handleCloseDetailModal}
+        title={modalTitle}
+        details={selectedDetails}
+      />
     </div>
   );
 };
