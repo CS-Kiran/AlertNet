@@ -85,7 +85,7 @@ const ViewAlerts = () => {
       <div className="absolute top-6 right-6">
         <button
           onClick={openQuickReport}
-          className="px-6 py-2 bg-green-600 text-white rounded-full font-bold shadow-md transition-transform transform duration-300 hover:scale-105"
+          className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-full font-bold shadow-md transition-transform transform duration-300 hover:scale-105"
         >
           Quick Report {" >>"}
         </button>
@@ -97,7 +97,7 @@ const ViewAlerts = () => {
             key={type}
             onClick={() => handleFilterChange(type)}
             className={`px-6 py-2 rounded-full font-semibold shadow-md transition-transform transform duration-300 hover:scale-105 ${
-              filter === type ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+              filter === type ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white" : "bg-gradient-to-r from-gray-300 to-gray-200 text-gray-800"
             }`}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -150,7 +150,7 @@ const ViewAlerts = () => {
               </span>
             </p>
             <button
-              className="mt-4 px-4 py-2 bg-red-500 text-white rounded-full font-semibold hover:bg-red-600 focus:outline-none"
+              className="mt-4 px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-full font-semibold hover:bg-red-600 focus:outline-none"
               onClick={(event) => openReportsModal(alert, event)}
             >
               Report

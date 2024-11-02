@@ -85,7 +85,7 @@ const UpdateAlert = ({ alert, onClose, onUpdate }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl overflow-y-auto max-h-[90vh]">
-        <h2 className="text-2xl font-bold text-blue-700 mb-4 text-center">
+        <h2 className="text-4xl font-bold text-blue-700 mb-4 text-center">
           Update Alert Details
         </h2>
 
@@ -346,20 +346,20 @@ const UpdateAlert = ({ alert, onClose, onUpdate }) => {
               <option value="">Select Case Status</option>
               <option value="open">Open</option>
               <option value="closed">Closed</option>
-              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
             </select>
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex justify-between mt-6">
             <button
               type="submit"
-              className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+              className="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 px-6 font-bold rounded-full hover:scale-105 transition duration-300"
             >
               Update Alert
             </button>
             <button
               type="button"
-              className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-300"
+              className="bg-gradient-to-r from-gray-300 to-gray-200 text-gray-800 py-2 px-6 font-bold rounded-full hover:scale-105 hover:bg-red-700 transition duration-300"
               onClick={onClose}
             >
               Cancel

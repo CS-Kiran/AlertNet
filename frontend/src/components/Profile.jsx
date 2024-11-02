@@ -45,7 +45,7 @@ const Profile = ({ role, userDetails, onEditProfile }) => {
         />
       ) : (
         <>
-          <h1 className="text-3xl font-bold mb-6 text-center text-gray-800 shadow-md rounded-lg p-4 bg-gray-100">
+          <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 shadow-md rounded-lg p-4 bg-gradient-to-r from-gray-300 to-gray-200 transition-transform transform duration-300 hover:scale-105">
             {userData.name}
           </h1>
 
@@ -145,7 +145,7 @@ const Profile = ({ role, userDetails, onEditProfile }) => {
 
           <button
             onClick={handleEditProfile}
-            className="mt-6 px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-blue-700 transition-all transform hover:translate-y-1"
+            className="mt-6 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-full shadow hover:bg-blue-700 transition-all transform hover:translate-y-1"
           >
             Edit Profile
           </button>

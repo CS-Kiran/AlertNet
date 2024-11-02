@@ -53,11 +53,11 @@ const DetailedReport = ({ onClose, alertId, citizenId, policeId }) => {
             />
           </svg>
         </button>
-        <h2 className="text-2xl font-semibold mb-4">Submit Report</h2>
+        <h2 className="text-4xl text-center font-semibold mb-4 text-blue-600">Submit Report</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label className="block mb-2 font-semibold">Upload Images:</label>
-          <input type="file" multiple onChange={handleFileChange} className="mb-4" />
+          <input type="file" multiple onChange={handleFileChange} className="mb-4 border rounded p-2" />
           <label className="block mb-2 font-semibold">Detailed Description of Incident:</label>
           <textarea
             value={message}
@@ -68,7 +68,7 @@ const DetailedReport = ({ onClose, alertId, citizenId, policeId }) => {
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 px-4 rounded w-full hover:bg-blue-700"
+            className="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 px-4 rounded-full w-full hover:bg-blue-700"
           >
             Submit Report
           </button>

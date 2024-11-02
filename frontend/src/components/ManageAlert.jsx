@@ -110,24 +110,24 @@ const ManageAlert = () => {
         {/* Filter Options */}
         <div>
           <button
-            className={`py-2 px-4 mx-2 rounded ${
-              filter === "all" ? "bg-blue-600 text-white" : "bg-gray-200"
+            className={`py-2 px-6 mx-2 rounded-full ${
+              filter === "all" ? "bg-gradient-to-r from-blue-600 to-blue-500 font-bold text-white shadow-xl" : "transition duration-300 hover:shadow-md bg-gray-200"
             }`}
             onClick={() => handleFilterChange("all")}
           >
             All
           </button>
           <button
-            className={`py-2 px-4 mx-2 rounded ${
-              filter === "missing" ? "bg-blue-600 text-white" : "bg-gray-200"
+            className={`py-2 px-6 mx-2 rounded-full ${
+              filter === "missing" ? "bg-gradient-to-r from-blue-600 to-blue-500 font-bold text-white shadow-xl" : "transition duration-300 hover:shadow-md bg-gray-200"
             }`}
             onClick={() => handleFilterChange("missing")}
           >
             Missing
           </button>
           <button
-            className={`py-2 px-4 mx-2 rounded ${
-              filter === "wanted" ? "bg-blue-600 text-white" : "bg-gray-200"
+            className={`py-2 px-6 mx-2 rounded-full ${
+              filter === "wanted" ? "bg-gradient-to-r from-blue-600 to-blue-500 font-bold text-white shadow-xl" : "transition duration-300 hover:shadow-md bg-gray-200"
             }`}
             onClick={() => handleFilterChange("wanted")}
           >
@@ -185,7 +185,7 @@ const ManageAlert = () => {
             </p>
             <div className="flex justify-between font-semibold">
               <button
-                className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-200"
+                className="mt-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 px-4 rounded-lg transition duration-200 hover:scale-105"
                 onClick={() => openPopup(alert.alertId)}
               >
                 View Details
@@ -193,7 +193,7 @@ const ManageAlert = () => {
 
               {alert.policeId === showPoliceID.id && (
                 <button
-                  className="mt-4 bg-yellow-500 text-gray-800 py-2 px-4 rounded hover:bg-yellow-600 transition duration-200"
+                  className="mt-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 py-2 px-4 rounded-lg transition duration-200 hover:scale-105"
                   onClick={() => handleUpdateAlert(alert)}
                 >
                   Update Alert

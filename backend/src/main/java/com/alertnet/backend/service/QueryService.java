@@ -41,4 +41,8 @@ public class QueryService {
     public List<Query> getAllQueries() {
         return queryRepository.findAll();
     }
+    
+    public List<Query> getQueriesBySenderId(Long senderId) {
+        return queryRepository.findBySenderId(senderId);
+    }
 }

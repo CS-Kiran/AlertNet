@@ -142,13 +142,13 @@ const EditProfile = ({ role, userDetails, onCancel, onUpdate }) => {
           <button
             type="button"
             onClick={onCancel}
-            className="mt-4 px-4 py-2 bg-red-500 text-white font-semibold rounded-md shadow hover:bg-red-600 transition-all"
+            className="mt-4 px-4 py-2 bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold rounded-md shadow hover:bg-red-600 transition-all"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-blue-700 transition-all"
+            className="mt-4 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-md shadow hover:bg-blue-700 transition-all"
           >
             Update Profile
           </button>

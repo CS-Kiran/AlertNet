@@ -137,10 +137,10 @@ export default function SignIn() {
 
           <button
             type="submit"
-            className={`w-full py-3 rounded-md font-semibold text-white transition-all shadow-lg ${
+            className={`w-full py-3 rounded-lg font-semibold text-white transition-all shadow-lg ${
               isCitizenLogin
-                ? "bg-blue-600 hover:bg-blue-700"
-                : "bg-red-800 hover:bg-red-700"
+                ? "bg-gradient-to-r from-blue-600 to-blue-500"
+                : "bg-gradient-to-r from-red-900 to-red-800"
             }`}
           >
             Sign In

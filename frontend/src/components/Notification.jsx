@@ -90,7 +90,7 @@ const Notification = ({ role, id, name }) => {
       {/* Send Notification Button */}
       <button
         onClick={() => setShowModal(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200 absolute top-6 right-6"
+        className="bg-gradient-to-r from-blue-600 to-blue-500 font-bold text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-200 absolute top-6 right-6"
       >
         Send Notification
       </button>
@@ -148,8 +148,8 @@ const Notification = ({ role, id, name }) => {
                   />
                 </svg>
               </button>
-              <h2 className="text-2xl font-semibold text-blue-600 mb-4">
-                Send Notification
+              <h2 className="text-3xl text-center font-semibold text-blue-600 mb-4">
+                Notification
               </h2>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
@@ -178,9 +178,9 @@ const Notification = ({ role, id, name }) => {
               <div className="flex justify-end">
                 <button
                   onClick={handleSendNotification}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200"
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition duration-200"
                 >
-                  Send Notification
+                  Send
                 </button>
               </div>
               {notificationStatus && (

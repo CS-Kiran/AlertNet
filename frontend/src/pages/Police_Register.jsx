@@ -560,17 +560,15 @@ const isFormValid = () => {
                   emergencyContactRelation: "",
                 })
               }
-              className="w-full py-3 px-4 mr-2 bg-red-500 text-white font-bold rounded-md hover:bg-red-600 transition duration-300"
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-gray-300 to-gray-200 text-gray-800 font-bold transition duration-300 hover:scale-105"
             >
               Clear
             </button>
-
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={!isFormValid()}
-              className={`w-full py-3 px-4 ml-2 bg-blue-600 text-white font-bold rounded-md transition duration-300 hover:bg-blue-700 ${
-                !isFormValid() && "cursor-not-allowed opacity-50"
+              className={`py-3 px-6 bg-gradient-to-r from-red-900 to-red-800 text-white font-bold rounded-full transition duration-300 hover:scale-105 ${
+                !isFormValid() && "cursor-not-allowed opacity-70"
               }`}
             >
               Register

@@ -125,7 +125,7 @@ const Reports = () => {
           Filter by my Police ID
         </label>
         <button
-          className="bg-green-600 text-white px-4 py-2 rounded mr-4"
+          className="bg-gradient-to-r from-green-700 to-green-600 text-white px-4 py-2 rounded-full font-bold mr-4"
           onClick={handleViewQuickReports}
         >
           View Quick Reports
@@ -205,7 +205,7 @@ const Reports = () => {
               })}
             </ul>
             <button
-              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+              className="mt-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-lg transition duration-300 hover:scale-105"
               onClick={handleDownloadAllImages}
             >
               Download All Images

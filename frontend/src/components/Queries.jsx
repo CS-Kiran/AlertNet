@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import UserQueriesModal from "./UserQueriesModal";
 
 const Queries = ({ Id, Name, Role }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,15 @@ const Queries = ({ Id, Name, Role }) => {
     role: Role,
   });
   const [responseMessage, setResponseMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,11 +33,7 @@ const Queries = ({ Id, Name, Role }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/queries",
-        formData
-      );
-      
+      await axios.post("http://localhost:8080/api/queries", formData);
       setResponseMessage("Query submitted successfully!");
       setFormData({
         name: Name,
@@ -43,12 +49,20 @@ const Queries = ({ Id, Name, Role }) => {
   };
 
   return (
-    <div className="flex justify-center py-10">
-      <button className="absolute top-6 right-6 p-4 bg-blue-600 text-white font-bold rounded-xl">
-        Track Queries
-      </button>
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-3xl">
-        <h2 className="text-3xl font-semibold text-blue-600 mb-6 text-center">
+    <div className="min-h-[90vh] flex flex-col items-center px-4">
+      <div className="relative w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
+        <button
+          onClick={handleOpenModal}
+          className="p-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold rounded-full shadow-md mb-6 hover:shadow-lg transition duration-200"
+        >
+          Track Queries
+        </button>
+
+        {isModalOpen && (
+          <UserQueriesModal userId={Id} onClose={handleCloseModal} />
+        )}
+
+        <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
           Submit a Query
         </h2>
         {responseMessage && (
@@ -56,36 +70,36 @@ const Queries = ({ Id, Name, Role }) => {
             {responseMessage}
           </p>
         )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               {formData.role.toUpperCase()} ID
             </label>
             <input
               type="text"
               name="id"
               value={formData.senderId}
-              onChange={handleChange}
               readOnly
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 focus:outline-none"
             />
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Name
             </label>
             <input
               type="text"
               name="name"
               value={formData.name}
-              onChange={handleChange}
               readOnly
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Type of Query
             </label>
             <select
@@ -93,7 +107,7 @@ const Queries = ({ Id, Name, Role }) => {
               value={formData.queryType}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="Technical">Technical</option>
               <option value="Account Issue">Account Issue</option>
@@ -101,8 +115,9 @@ const Queries = ({ Id, Name, Role }) => {
               <option value="Other">Other</option>
             </select>
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Message
             </label>
             <textarea
@@ -110,13 +125,14 @@ const Queries = ({ Id, Name, Role }) => {
               value={formData.message}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows="4"
             ></textarea>
           </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition duration-200"
+            className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Submit Query
           </button>

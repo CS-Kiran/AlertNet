@@ -235,21 +235,19 @@ export default function CitizenRegistration() {
 
           {/* Button Group */}
           <div className="flex justify-between">
-            {/* Clear Button */}
             <button
               type="button"
               onClick={handleClear}
-              className="w-full py-3 rounded-md bg-red-600 text-white font-semibold transition duration-300 hover:bg-red-700"
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-gray-300 to-gray-200 text-gray-800 font-bold transition duration-300 hover:scale-105"
             >
               Clear
             </button>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={!isFormValid()}
-              className={`w-full py-3 px-4 ml-2 bg-blue-600 text-white font-bold rounded-md transition duration-300 hover:bg-blue-700 ${
-                !isFormValid() && "cursor-not-allowed opacity-50"
+              className={`py-3 px-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold rounded-full transition duration-300 hover:scale-105 ${
+                !isFormValid() && "cursor-not-allowed opacity-70"
               }`}
             >
               Register

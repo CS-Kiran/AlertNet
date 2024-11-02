@@ -35,6 +35,15 @@ public class QueryController {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @GetMapping("/sender/{senderId}")
+    public ResponseEntity<List<Query>> getQueriesBySenderId(@PathVariable Long senderId) {
+        List<Query> queries = queryService.getQueriesBySenderId(senderId);
+        if (queries.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(queries);
+    }
 
     // New method to get all queries
     @GetMapping

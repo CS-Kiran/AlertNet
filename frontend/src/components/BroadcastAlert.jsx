@@ -545,7 +545,7 @@ const BroadcastAlert = () => {
                 <button
                   type="button"
                   onClick={handlePrevStep}
-                  className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 font-bold text-white py-2 px-4 rounded-lg hover:bg-blue-600"
                 >
                   Previous
                 </button>
@@ -554,14 +554,14 @@ const BroadcastAlert = () => {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 font-bold text-white py-2 px-4 rounded-lg hover:bg-blue-600"
                 >
                   Next
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className="bg-green-600 text-white py-2 px-4 font-bold rounded-lg hover:bg-green-700"
+                  className="bg-gradient-to-r from-green-700 to-green-600 font-bold text-white py-2 px-4 rounded-lg hover:bg-green-700"
                 >
                   Broadcast
                 </button>
