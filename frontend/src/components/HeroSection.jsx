@@ -59,7 +59,7 @@ const HeroSection = () => {
             empower citizens to report cases with ease. <p className="text-xl text-gray-800 font-bold">Stay informed, stay
             connected, and contribute to public safety.</p>
           </p>
-          <Link to='/learn-more' className="bg-blue-600 text-white py-4 font-semibold px-6 rounded hover:bg-blue-700 transition duration-300">
+          <Link to='/learn-more' className="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 font-bold px-6 rounded hover:scale-105 transition duration-300">
             Learn More
           </Link>
         </div>

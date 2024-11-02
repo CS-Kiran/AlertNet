@@ -59,7 +59,7 @@ const Queries = ({ Id, Name, Role }) => {
         </button>
 
         {isModalOpen && (
-          <UserQueriesModal userId={Id} onClose={handleCloseModal} />
+          <UserQueriesModal userId={Id} onClose={handleCloseModal} Name={Name}/>
         )}
 
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">

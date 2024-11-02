@@ -32,7 +32,7 @@ const Notification = ({ role, id, name }) => {
           );
         });
 
-        filteredNotifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        filteredNotifications.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
         setNotifications(filteredNotifications);
         setLoading(false);
@@ -90,7 +90,7 @@ const Notification = ({ role, id, name }) => {
       {/* Send Notification Button */}
       <button
         onClick={() => setShowModal(true)}
-        className="bg-gradient-to-r from-blue-600 to-blue-500 font-bold text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-200 absolute top-6 right-6"
+        className="bg-gradient-to-r from-green-700 to-green-600 font-bold text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-200 absolute top-6 right-6"
       >
         Send Notification
       </button>
@@ -109,16 +109,16 @@ const Notification = ({ role, id, name }) => {
             <div
               key={notif.notificationId}
               className={`p-6 max-w-[35rem] border rounded-lg shadow-md ${
-                name === notif.senderName ? "bg-white" : "bg-blue-200 ml-[10rem]"
+                name === notif.senderName ? "bg-gradient-to-r from-gray-300 to-gray-200 text-gray-800" : "bg-gradient-to-r from-blue-600 to-blue-500 text-white ml-[10rem]"
               }`}
             >
               <div className="flex justify-between items-center">
-                <p className="text-gray-700 font-semibold">{notif.message}</p>
-                <span className="text-sm text-gray-500">
+                <p className="font-bold text-lg">{notif.message}</p>
+                <span className="text-sm">
                   {new Date(notif.createdAt).toLocaleString()}
                 </span>
               </div>
-              <p className="text-gray-600">
+              <p className="text-sm">
                 From: {notif.senderName}
               </p>
             </div>
@@ -148,7 +148,7 @@ const Notification = ({ role, id, name }) => {
                   />
                 </svg>
               </button>
-              <h2 className="text-3xl text-center font-semibold text-blue-600 mb-4">
+              <h2 className="text-3xl text-center font-bold text-green-700 mb-4">
                 Notification
               </h2>
               <div className="mb-4">
@@ -178,7 +178,7 @@ const Notification = ({ role, id, name }) => {
               <div className="flex justify-end">
                 <button
                   onClick={handleSendNotification}
-                  className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition duration-200"
+                  className="bg-gradient-to-r from-green-700 to-green-600 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 transition duration-200"
                 >
                   Send
                 </button>

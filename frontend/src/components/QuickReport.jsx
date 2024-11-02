@@ -111,13 +111,13 @@ const QuickReport = ({ onClose }) => {
         <div className="flex justify-between mt-6 space-x-4">
           <button
             onClick={handleReportSubmit}
-            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full hover:bg-green-700"
+            className="px-6 py-2 font-bold bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full hover:bg-green-700"
           >
             Report
           </button>
           <button
             onClick={onClose}
-            className="px-6 py-2 bg-gradient-to-r from-gray-400 to-gray-300 rounded-full hover:bg-gray-400"
+            className="px-6 py-2 font-bold bg-gradient-to-r from-gray-400 to-gray-300 rounded-full hover:bg-gray-400"
           >
             Cancel
           </button>

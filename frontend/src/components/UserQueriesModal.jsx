@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const UserQueriesModal = ({ userId, onClose }) => {
+const UserQueriesModal = ({ userId, Name, onClose }) => {
   const [queries, setQueries] = useState([]);
 
   useEffect(() => {
     const fetchQueries = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/api/queries/sender/${userId}`);
-        setQueries(response.data);
+        const userQueries = response.data.filter((query) => query.name == Name);
+        setQueries(userQueries);
       } catch (error) {
         console.error("Error fetching queries:", error);
       }
     };
 
     fetchQueries();
-  }, [userId]);
+  }, [userId, Name]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -33,9 +34,9 @@ const UserQueriesModal = ({ userId, onClose }) => {
           <ul className="space-y-4">
             {queries.map((query) => (
               <li key={query.id} className="p-4 bg-gray-100 rounded-md shadow">
-                <h3 className="font-bold text-lg">Admin : {query.adminResponse || "Not yet Responded!!"}</h3>
-                <p className="text-sm text-gray-700">Query : {query.message}</p>
-                <p className="text-sm text-gray-700">{query.queryType}</p>
+                <h3 className="font-bold text-lg">Admin Response: {query.adminResponse || "Not yet Responded!"}</h3>
+                <p className="text-sm text-gray-700">Query: {query.message}</p>
+                <p className="text-sm text-gray-700">Type: {query.queryType}</p>
                 <p className="text-xs text-gray-600 mt-1">Status: {query.status}</p>
               </li>
             ))}

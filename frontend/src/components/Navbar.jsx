@@ -32,7 +32,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/login"
-                className="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700 transition duration-300"
+                className="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 px-6 rounded hover:scale-105 transition duration-300"
               >
                 Sign In
               </Link>

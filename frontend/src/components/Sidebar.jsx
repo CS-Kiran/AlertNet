@@ -41,7 +41,7 @@ const Sidebar = ({ role }) => {
 
   return (
     <div className="h-screen w-72 bg-gradient-to-b from-blue-700 to-blue-600 text-slate-50 fixed shadow-lg">
-      <div className="text-center p-6 text-3xl font-bold tracking-wider border-blue-500 transition-all hover:scale-110 duration-300">
+      <div className="border-b-2 text-center p-6 text-3xl font-bold tracking-wider transition hover:scale-105 duration-300">
         <p>Welcome</p>
         {userInfo
           ? `${
