@@ -127,6 +127,9 @@ const ViewAlerts = () => {
             </div>
             <h3 className="text-lg font-bold text-blue-700 mt-4">{alert.name}</h3>
             <p className="text-gray-600 mt-1">
+              <span className="font-semibold">Alerted By:</span> {alert.policeId}
+            </p>
+            <p className="text-gray-600 mt-1">
               <span className="font-semibold">Description:</span> {alert.description}
             </p>
             <p className="text-gray-600">
@@ -183,6 +186,7 @@ const ViewAlerts = () => {
               />
             )}
             <div className="text-gray-700">
+              <p><strong>Alerted By: </strong> {expandedAlert.policeId}</p>
               <p><strong>Description: </strong> {expandedAlert.description}</p>
               <p><strong>Last Seen: </strong> {expandedAlert.lastSeenDate}</p>
               {expandedAlert.age && <p><strong>Age: </strong> {expandedAlert.age}</p>}

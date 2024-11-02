@@ -7,6 +7,7 @@ import axios from "axios";
 import { decodeJwt } from "../utility/decodeJwt";
 import SubmittedReports from "../components/SubmittedReports";
 import Queries from "../components/Queries";
+import Notification from "../components/Notification";
 
 export default function CitizenDashboard() {
   const role = "citizen";
@@ -81,6 +82,10 @@ export default function CitizenDashboard() {
           <Route
             path="queries"
             element={<Queries Id={citizenId} Name={citizenName} Role={role}/>}
+          />
+          <Route
+            path="notifications"
+            element={<Notification id={citizenId} name={citizenName} role={role}/>}
           />
         </Routes>
       </div>

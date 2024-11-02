@@ -58,13 +58,13 @@ const DetailedReport = ({ onClose, alertId, citizenId, policeId }) => {
         <form onSubmit={handleSubmit}>
           <label className="block mb-2 font-semibold">Upload Images:</label>
           <input type="file" multiple onChange={handleFileChange} className="mb-4" />
-          <label className="block mb-2 font-semibold">Message:</label>
+          <label className="block mb-2 font-semibold">Detailed Description of Incident:</label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows="4"
             className="border rounded w-full p-2 mb-4"
-            placeholder="Enter your message here..."
+            placeholder="Please provide Location/Address and Incident details here..."
           />
           <button
             type="submit"

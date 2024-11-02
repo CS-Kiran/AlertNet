@@ -78,7 +78,7 @@ const ViewQuickReports = ({ isOpen, onClose }) => { // Accepting props for modal
                         {alert.imagePath.split('/').pop()}
                       </button>
                     </td>
-                    <td className="py-4 px-5 border-b border-gray-200 text-sm text-gray-700">{alert.reportTime}</td>
+                    <td className="py-4 px-5 border-b border-gray-200 text-sm text-gray-700">{new Date(alert.reportTime).toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>

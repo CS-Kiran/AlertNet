@@ -9,6 +9,7 @@ import { decodeJwt } from "../utility/decodeJwt";
 import Profile from "../components/Profile";
 import Reports from "./Reports";
 import Queries from "../components/Queries";
+import Notification from "../components/Notification";
 
 export default function PoliceDashboard() {
   const role = "police";
@@ -84,6 +85,10 @@ export default function PoliceDashboard() {
           <Route
             path="queries"
             element={<Queries Id={policeId} Name={policeName} Role={role}/>}
+          />
+          <Route
+            path="notifications"
+            element={<Notification id={policeId} name={policeName} role={role}/>}
           />
         </Routes>
       </div>

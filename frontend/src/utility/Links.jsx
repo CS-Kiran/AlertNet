@@ -11,7 +11,7 @@ export const linksByRole = {
     { name: "Broadcast Alert", path: "/police/alerts" },
     { name: "Manage Alerts", path: "/police/manage-alerts" },
     { name: "View Reports", path: "/police/reports" },
-    { name: "Notifications", path: "/police/notification" },
+    { name: "Notifications", path: "/police/notifications" },
     { name: "Queries", path: "/police/queries" },
   ],
   admin: [
