@@ -4,7 +4,7 @@ import axios from "axios";
 const Queries = ({ Id, Name, Role }) => {
   const [formData, setFormData] = useState({
     name: Name,
-    id: Id,
+    senderId: Id,
     message: "",
     queryType: "Technical",
     status: "Pending",
@@ -27,10 +27,11 @@ const Queries = ({ Id, Name, Role }) => {
         "http://localhost:8080/api/queries",
         formData
       );
+      
       setResponseMessage("Query submitted successfully!");
       setFormData({
         name: Name,
-        id: Id,
+        senderId: Id,
         message: "",
         queryType: "Technical",
         status: "Pending",
@@ -43,6 +44,9 @@ const Queries = ({ Id, Name, Role }) => {
 
   return (
     <div className="flex justify-center py-10">
+      <button className="absolute top-6 right-6 p-4 bg-blue-600 text-white font-bold rounded-xl">
+        Track Queries
+      </button>
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-3xl">
         <h2 className="text-3xl font-semibold text-blue-600 mb-6 text-center">
           Submit a Query
@@ -60,7 +64,7 @@ const Queries = ({ Id, Name, Role }) => {
             <input
               type="text"
               name="id"
-              value={formData.id}
+              value={formData.senderId}
               onChange={handleChange}
               readOnly
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

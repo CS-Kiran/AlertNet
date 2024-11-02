@@ -13,7 +13,7 @@ public class Query {
 
     private String name;
     private String role;
-    private String citizenOrPoliceId;
+    private Long senderId;
     private String message;
     private String queryType;
     private String status;
@@ -46,12 +46,12 @@ public class Query {
         this.role = role;
     }
 
-    public String getCitizenOrPoliceId() {
-        return citizenOrPoliceId;
+    public Long getsenderId() {
+        return senderId;
     }
 
-    public void setCitizenOrPoliceId(String citizenOrPoliceId) {
-        this.citizenOrPoliceId = citizenOrPoliceId;
+    public void setsenderId(Long senderId) {
+        this.senderId = senderId;
     }
 
     public String getMessage() {
