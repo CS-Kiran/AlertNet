@@ -108,7 +108,7 @@ const suspendPolice = async () => {
     <div className="bg-gray-100 flex min-h-full">
       <div className="min-w-6xl w-full bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-3xl font-bold text-center mb-6 text-blue-700">
-          Police Details
+          User Details
         </h1>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse rounded-lg overflow-hidden">

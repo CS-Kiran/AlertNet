@@ -94,6 +94,9 @@ const ViewQueries = () => {
               <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">
                 Actions
               </th>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">
+                Updated On
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -120,6 +123,7 @@ const ViewQueries = () => {
                     Respond
                   </button>
                 </td>
+                <td className="py-4 px-5 text-sm text-gray-700">{query.updatedAt}</td>
               </tr>
             ))}
           </tbody>
