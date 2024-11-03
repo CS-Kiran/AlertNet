@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +27,9 @@ import com.alertnet.backend.service.AlertService;
 public class AlertController {
     @Autowired
     private AlertService alertService;
+
+    @Value("${upload.directory}")
+    private String uploadDir;
 
     @PostMapping("/create")
     public ResponseEntity<?> createAlert(
@@ -109,7 +113,7 @@ public class AlertController {
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> getAlertImage(@PathVariable String filename) {
         try {
-            Path filePath = Paths.get("/home/ubuntu/Desktop/AlertNet/backend/uploads/alerts").resolve(filename).normalize();
+            Path filePath = Paths.get(uploadDir+"/alerts").resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() && resource.isReadable()) {
