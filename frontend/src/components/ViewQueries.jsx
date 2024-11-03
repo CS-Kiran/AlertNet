@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAlert } from "../context/AlertContext";
 
-
 const ViewQueries = () => {
   const [queries, setQueries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +13,10 @@ const ViewQueries = () => {
     const fetchQueries = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/queries");
-        setQueries(response.data);
+        const sortedQueries = response.data.sort(
+          (a, b) => a.queryId - b.queryId
+        );
+        setQueries(sortedQueries);
         setLoading(false);
       } catch (e) {
         showAlert("error", "Failed to load queries" + e);
@@ -58,7 +60,9 @@ const ViewQueries = () => {
 
   if (loading) {
     return (
-      <p className="text-center text-xl text-blue-500 font-bold">Loading queries...</p>
+      <p className="text-center text-xl text-blue-500 font-bold">
+        Loading queries...
+      </p>
     );
   }
 
@@ -93,10 +97,10 @@ const ViewQueries = () => {
                 Admin Response
               </th>
               <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">
-                Actions
+                Updated On
               </th>
               <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">
-                Updated On
+                Actions
               </th>
             </tr>
           </thead>
@@ -121,11 +125,20 @@ const ViewQueries = () => {
                 <td className="py-4 px-5 text-sm text-gray-700">
                   {query.message}
                 </td>
-                <td className="py-4 px-5 text-sm text-gray-700">
+                <td
+                  className={`py-4 px-5 text-sm font-bold ${
+                    query.status === "Pending"
+                      ? "text-yellow-500"
+                      : "text-green-600"
+                  }`}
+                >
                   {query.status}
                 </td>
                 <td className="py-4 px-5 text-sm text-gray-700">
                   {query.adminResponse || "Not Responded!!"}
+                </td>
+                <td className="py-4 px-5 text-sm text-gray-700">
+                  {new Date(query.updatedAt).toLocaleString()}
                 </td>
                 <td className="py-4 px-5 text-sm text-gray-700">
                   <button
@@ -133,13 +146,10 @@ const ViewQueries = () => {
                       setSelectedQuery(query);
                       setAdminResponse(query.adminResponse || "");
                     }}
-                    className="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition duration-200"
+                    className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full hover:bg-gray-300 transition duration-200"
                   >
                     Respond
                   </button>
-                </td>
-                <td className="py-4 px-5 text-sm text-gray-700">
-                  {new Date(query.updatedAt).toLocaleString()}
                 </td>
               </tr>
             ))}

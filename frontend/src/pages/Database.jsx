@@ -82,7 +82,7 @@ const Database = () => {
       </Link>
 
       <div className="absolute top-6 right-6">
-      <button onClick={openQuickReport} className="px-6 py-2 bg-green-600 text-white rounded-full font-bold shadow-md transition-transform transform duration-300 hover:scale-105">
+      <button onClick={openQuickReport} className="px-6 py-2 bg-gradient-to-r from-green-700 to-green-600 text-white rounded-full font-bold shadow-md transition-transform transform duration-300 hover:scale-105">
           Quick Report {" >>" }
         </button>
       </div>

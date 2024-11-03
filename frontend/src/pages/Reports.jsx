@@ -39,8 +39,15 @@ const Reports = () => {
     try {
       const response = await axios.get("http://localhost:8080/api/reports/all");
       console.log(response.data);
-      setReports(response.data);
-      setFilteredReports(response.data);
+      const sortedReports = response.data.sort((a, b) => {
+        if (a.alert && b.alert) {
+          return a.alert.alertId - b.alert.alertId;
+        }
+        return 0;
+      });
+  
+      setReports(sortedReports);
+      setFilteredReports(sortedReports);
     } catch (error) {
       console.error("Error fetching reports:", error);
     }
@@ -149,7 +156,7 @@ const Reports = () => {
           </thead>
           <tbody>
             {filteredReports.map((report) => (
-              <tr key={report.id} className="hover:bg-gray-100 border-b border-gray-300 text-center font-semibold">
+              <tr key={report.id} className="hover:bg-gray-100 border-b border-gray-300 text-center font-normal">
                 <td className="py-2 border-b text-center cursor-pointer">
                   <p
                     onClick={() => handleOpenDetailModal(report)} // Pass the entire report object

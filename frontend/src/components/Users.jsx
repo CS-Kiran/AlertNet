@@ -13,7 +13,8 @@ const User = () => {
         const response = await axios.get(
           "http://localhost:8080/api/police/all"
         );
-        setPoliceDetails(response.data);
+        const sortedDetails = response.data.sort((a, b) => a.id - b.id);
+        setPoliceDetails(sortedDetails);
       } catch (error) {
         console.error("Error fetching police details:", error);
         showAlert("error", "Failed to fetch police details.");
@@ -129,9 +130,11 @@ const suspendPolice = async () => {
               {policeDetails.length > 0 ? (
                 policeDetails.map((police, index) => (
                   <tr
-                    key={index}
-                    className="hover:bg-blue-100 transition-all duration-200 border-b border-gray-200 text-center"
-                  >
+                  key={index}
+                  className={`hover:bg-blue-100 transition-all duration-200 border-gray-200 text-center border-b ${
+                    police.accountStatus === "suspended" ? "border-l-4 border-red-700" : ""
+                  }`}
+                >
                     <td className="p-4">{police.id}</td>
                     <td className="p-4">{police.name}</td>
                     <td className="p-4">{police.email}</td>
