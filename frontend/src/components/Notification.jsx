@@ -38,7 +38,6 @@ const Notification = ({ role, id, name }) => {
         setLoading(false);
         console.log(notifications);
       } catch (err) {
-        alert("Failed to load notifications.");
         setLoading(false);
       }
     };

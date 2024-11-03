@@ -113,7 +113,7 @@ const Database = () => {
             <div className="w-full h-48 overflow-hidden rounded-lg">
               {alert.imagePath ? (
                 <img
-                  src={`http://localhost:8080/api/alerts/${alert.imagePath.split("/").pop()}`}
+                  src={`http://localhost:8080/api/alerts/${alert.imagePath.split("\\").pop()}`}
                   alt={alert.name}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
@@ -153,7 +153,7 @@ const Database = () => {
             <h3 className="text-3xl font-bold text-blue-700 mb-4 text-center">{expandedAlert.name}</h3>
             {expandedAlert.imagePath && (
               <img
-                src={`http://localhost:8080/api/alerts/${expandedAlert.imagePath.split("/").pop()}`}
+                src={`http://localhost:8080/api/alerts/${expandedAlert.imagePath.split("\\").pop()}`}
                 alt={expandedAlert.name}
                 className="w-auto h-64 object-cover rounded-lg mb-4 transition-transform transform duration-300 hover:scale-105"
               />

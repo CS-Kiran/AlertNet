@@ -130,7 +130,7 @@ const ViewAlerts = () => {
               {alert.imagePath ? (
                 <img
                   src={`http://localhost:8080/api/alerts/${alert.imagePath
-                    .split("/")
+                    .split("\\")
                     .pop()}`}
                   alt={alert.name}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
@@ -205,7 +205,7 @@ const ViewAlerts = () => {
             {expandedAlert.imagePath && (
               <img
                 src={`http://localhost:8080/api/alerts/${expandedAlert.imagePath
-                  .split("/")
+                  .split("\\")
                   .pop()}`}
                 alt={expandedAlert.name}
                 className="w-auto h-64 object-cover rounded-lg mb-4 transition-transform transform duration-300 hover:scale-105"

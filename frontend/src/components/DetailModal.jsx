@@ -33,7 +33,7 @@ const DetailModal = ({ isOpen, onClose, title, details }) => {
             <>
               {details.imagePath && (
                 <img
-                  src={`http://localhost:8080/api/alerts/${details.imagePath.split("/").pop()}`}
+                  src={`http://localhost:8080/api/alerts/${details.imagePath.split("\\").pop()}`}
                   alt={details.name}
                   className="w-auto h-[20rem] object-cover rounded-lg transition-transform transform duration-300 hover:scale-105 mb-4"
                 />

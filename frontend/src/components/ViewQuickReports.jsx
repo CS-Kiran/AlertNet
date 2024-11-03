@@ -74,8 +74,8 @@ const ViewQuickReports = ({ isOpen, onClose }) => { // Accepting props for modal
                     <td className="py-4 px-5 border-b border-gray-200 text-sm text-gray-700">{alert.longitude}</td>
                     <td className="py-4 px-5 border-b border-gray-200 text-sm text-gray-700">{alert.reporterName}</td>
                     <td className="py-4 px-5 border-b border-gray-200 text-sm text-blue-500 cursor-pointer">
-                      <button onClick={() => handleDownload(alert.imagePath.split('/').pop())} className="text-blue-500 underline">
-                        {alert.imagePath.split('/').pop()}
+                      <button onClick={() => handleDownload(alert.imagePath.split('\\').pop())} className="text-blue-500 underline">
+                        {alert.imagePath.split('\\').pop()}
                       </button>
                     </td>
                     <td className="py-4 px-5 border-b border-gray-200 text-sm text-gray-700">{new Date(alert.reportTime).toLocaleString()}</td>

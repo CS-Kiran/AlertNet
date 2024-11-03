@@ -118,12 +118,12 @@ const Profile = ({ role, userDetails, onEditProfile }) => {
                 Government ID Proof:
                 <a
                   href={`http://localhost:8080/api/police/idproof/${userData.govIdProofPath
-                    .split("/")
+                    .split("\\")
                     .pop()}`}
                   download
                   className="text-blue-600 underline"
                 >
-                  {userData.govIdProofPath.split("/").pop()}
+                  {userData.govIdProofPath.split("\\").pop()}
                 </a>
               </p>
             </div>

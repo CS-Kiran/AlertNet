@@ -214,12 +214,12 @@ const suspendPolice = async () => {
               <strong>Government ID Proof:</strong>
               <a
                 href={`http://localhost:8080/api/police/idproof/${selectedPolice.govIdProofPath
-                  .split("/")
+                  .split("\\")
                   .pop()}`}
                 download
                 className="text-blue-600 underline"
               >
-                {selectedPolice.govIdProofPath.split("/").pop()}
+                {selectedPolice.govIdProofPath.split("\\").pop()}
               </a>
             </p>
 

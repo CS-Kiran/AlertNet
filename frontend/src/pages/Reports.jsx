@@ -197,7 +197,7 @@ const Reports = () => {
             <h2 className="text-lg font-bold mb-4">Images</h2>
             <ul>
               {selectedImages.map((imagePath, index) => {
-                const fileName = imagePath.split("/").pop();
+                const fileName = imagePath.split("\\").pop();
                 return (
                   <li key={index} className="mb-2">
                     <a

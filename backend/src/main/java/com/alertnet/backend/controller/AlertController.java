@@ -109,7 +109,7 @@ public class AlertController {
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> getAlertImage(@PathVariable String filename) {
         try {
-            Path filePath = Paths.get("/home/ubuntu/Desktop/AlertNet/backend/uploads/alerts").resolve(filename).normalize();
+            Path filePath = Paths.get("D:/Projects_MCA/AlertNet/backend/uploads/alerts").resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() && resource.isReadable()) {

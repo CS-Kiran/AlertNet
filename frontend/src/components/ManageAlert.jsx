@@ -155,7 +155,7 @@ const ManageAlert = () => {
             {alert.imagePath && (
               <img
                 src={`http://localhost:8080/api/alerts/${alert.imagePath
-                  .split("/")
+                  .split("\\")
                   .pop()}`}
                 alt={alert.name}
                 className="w-full h-40 object-cover rounded-lg transition-transform transform duration-300 hover:scale-105"
@@ -222,7 +222,7 @@ const ManageAlert = () => {
             {selectedAlert.imagePath && (
               <img
                 src={`http://localhost:8080/api/alerts/${selectedAlert.imagePath
-                  .split("/")
+                  .split("\\")
                   .pop()}`}
                 alt={selectedAlert.name}
                 className="w-auto h-[15rem] object-cover rounded-lg mb-4 ml-5 transition-transform transform duration-300 hover:scale-110"
