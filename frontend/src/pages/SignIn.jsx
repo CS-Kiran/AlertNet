@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAlert } from "../context/AlertContext"; // Import your useAlert hook
-import axios from "axios"; // Import axios
+import { useAlert } from "../context/AlertContext";
+import axios from "axios"
 
 export default function SignIn() {
   const [isCitizenLogin, setIsCitizenLogin] = useState(true);

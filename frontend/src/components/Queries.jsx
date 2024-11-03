@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import UserQueriesModal from "./UserQueriesModal";
+import { useAlert } from "../context/AlertContext";
 
 const Queries = ({ Id, Name, Role }) => {
   const [formData, setFormData] = useState({
@@ -11,8 +12,8 @@ const Queries = ({ Id, Name, Role }) => {
     status: "Pending",
     role: Role,
   });
-  const [responseMessage, setResponseMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { showAlert } = useAlert();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -34,7 +35,7 @@ const Queries = ({ Id, Name, Role }) => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:8080/api/queries", formData);
-      setResponseMessage("Query submitted successfully!");
+      showAlert("success", "Query submitted successfully!");
       setFormData({
         name: Name,
         senderId: Id,
@@ -44,7 +45,7 @@ const Queries = ({ Id, Name, Role }) => {
         role: Role,
       });
     } catch (error) {
-      setResponseMessage("Failed to submit query.");
+      showAlert("error", "Failed to submit query" + error);
     }
   };
 
@@ -65,11 +66,6 @@ const Queries = ({ Id, Name, Role }) => {
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
           Submit a Query
         </h2>
-        {responseMessage && (
-          <p className="text-center text-lg text-green-500 mb-4">
-            {responseMessage}
-          </p>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>

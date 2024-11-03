@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useAlert } from "../context/AlertContext";
 
 const UpdateAlert = ({ alert, onClose, onUpdate }) => {
+  const { showAlert } = useAlert();
   const [formData, setFormData] = useState({
     type: "",
     name: "",
@@ -55,7 +57,6 @@ const UpdateAlert = ({ alert, onClose, onUpdate }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  console.log(formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,14 +72,14 @@ const UpdateAlert = ({ alert, onClose, onUpdate }) => {
       );
 
       if (response.status === 200) {
-        console.log("Alert updated successfully");
+        showAlert("success", "Alert updated successfully!");
         onUpdate();
         onClose();
       } else {
-        console.error("Failed to update alert");
+        showAlert("error", "Failed to update alert");
       }
     } catch (error) {
-      console.error("Error updating alert:", error);
+      showAlert("error", "Error updating alert:" + error);
     }
   };
 

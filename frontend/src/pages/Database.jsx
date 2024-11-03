@@ -43,11 +43,11 @@ const Database = () => {
     if (alert.type.toLowerCase() === "wanted") {
       switch (alert.dangerLevel) {
         case "low":
-          return "border-2 border-green-500";
+          return "border-t-4 border-green-500";
         case "medium":
-          return "border-2 border-yellow-500";
+          return "border-t-4 border-yellow-500";
         case "high":
-          return "border-2 border-red-500";
+          return "border-t-4 border-red-500";
         default:
           return "";
       }
@@ -94,7 +94,7 @@ const Database = () => {
             key={type}
             onClick={() => handleFilterChange(type)}
             className={`px-6 py-2 rounded-full font-semibold shadow-md transition-transform transform duration-300 hover:scale-105 ${
-              filter === type ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+              filter === type ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white" : "bg-gradient-to-r from-gray-300 to-gray-200 text-gray-700"
             }`}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -179,13 +179,13 @@ const Database = () => {
               {expandedAlert.dangerLevel && (
                 <p><strong>Danger Level: </strong>
                   <span className={`font-bold ${expandedAlert.dangerLevel === "low" ? "text-green-600" : expandedAlert.dangerLevel === "medium" ? "text-yellow-600" : "text-red-600"}`}>
-                    {expandedAlert.dangerLevel}
+                    {expandedAlert.dangerLevel.toUpperCase()}
                   </span>
                 </p>
               )}
               <p><strong>Status: </strong>
                 <span className={`font-bold ${expandedAlert.caseStatus === "open" ? "text-green-600" : expandedAlert.caseStatus === "in-progress" ? "text-yellow-600" : "text-red-600"}`}>
-                  {expandedAlert.caseStatus}
+                  {expandedAlert.caseStatus.toUpperCase()}
                 </span>
               </p>
             </div>

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAlert } from "../context/AlertContext";
+
 
 const ViewQueries = () => {
   const [queries, setQueries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [responseMessage, setResponseMessage] = useState("");
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [adminResponse, setAdminResponse] = useState("");
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     const fetchQueries = async () => {
@@ -15,13 +16,13 @@ const ViewQueries = () => {
         const response = await axios.get("http://localhost:8080/api/queries");
         setQueries(response.data);
         setLoading(false);
-      } catch (error) {
-        setError("Failed to load queries");
+      } catch (e) {
+        showAlert("error", "Failed to load queries" + e);
         setLoading(false);
       }
     };
     fetchQueries();
-  }, []);
+  }, [showAlert]);
 
   const handleResponseChange = (e) => {
     setAdminResponse(e.target.value);
@@ -38,7 +39,7 @@ const ViewQueries = () => {
         `http://localhost:8080/api/queries/${selectedQuery.queryId}`,
         updatedQuery
       );
-      setResponseMessage("Response submitted successfully!");
+      showAlert("success", "Responded successfully!");
 
       // Update the query list with the new response
       setQueries((prevQueries) =>
@@ -50,19 +51,15 @@ const ViewQueries = () => {
       // Reset response and selected query
       setSelectedQuery(null);
       setAdminResponse("");
-    } catch (error) {
-      setResponseMessage("Failed to submit response.");
+    } catch (e) {
+      showAlert("error", "Failed to submit response." + e);
     }
   };
 
   if (loading) {
     return (
-      <p className="text-center text-lg text-gray-500">Loading queries...</p>
+      <p className="text-center text-xl text-blue-500 font-bold">Loading queries...</p>
     );
-  }
-
-  if (error) {
-    return <p className="text-center text-lg text-red-500">{error}</p>;
   }
 
   return (
@@ -70,11 +67,6 @@ const ViewQueries = () => {
       <h2 className="text-3xl font-semibold text-blue-600 mb-6 text-center">
         View All Queries
       </h2>
-      {responseMessage && (
-        <p className="text-center text-lg text-green-500 mb-4">
-          {responseMessage}
-        </p>
-      )}
       <div className="overflow-auto rounded-lg shadow-lg mb-6">
         <table className="min-w-full bg-white border border-gray-300">
           <thead className="bg-blue-600 text-white">

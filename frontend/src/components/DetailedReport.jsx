@@ -1,10 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { useAlert } from "../context/AlertContext";
+
 
 const DetailedReport = ({ onClose, alertId, citizenId, policeId }) => {
   const [images, setImages] = useState([]);
-  const [message, setMessage] = useState(""); // State for message input
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
+  const { showAlert } = useAlert();
+
 
   const handleFileChange = (e) => {
     setImages([...e.target.files]);
@@ -26,10 +29,10 @@ const DetailedReport = ({ onClose, alertId, citizenId, policeId }) => {
       const response = await axios.post("http://localhost:8080/api/reports/create", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("Report submitted successfully!");
+      showAlert("success", "Report submitted successfully!");
       onClose();
     } catch (err) {
-      setError(err.response ? err.response.data : "Error submitting report");
+      showAlert("success", "Error submitting report" + err);
     }
   };
   
@@ -54,7 +57,6 @@ const DetailedReport = ({ onClose, alertId, citizenId, policeId }) => {
           </svg>
         </button>
         <h2 className="text-4xl text-center font-semibold mb-4 text-blue-600">Submit Report</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label className="block mb-2 font-semibold">Upload Images:</label>
           <input type="file" multiple onChange={handleFileChange} className="mb-4 border rounded p-2" />

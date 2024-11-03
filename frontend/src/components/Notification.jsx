@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useAlert } from "../context/AlertContext";
 
 const Notification = ({ role, id, name }) => {
-  const [notifications, setNotifications] = useState([]); // Initialize as an empty array
+  const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
   const [receiverId, setReceiverId] = useState("");
-  const [notificationStatus, setNotificationStatus] = useState("");
+  const { showAlert } = useAlert();
+
 
   // Fetch notifications on component mount
   useEffect(() => {
@@ -17,7 +18,6 @@ const Notification = ({ role, id, name }) => {
         const response = await axios.get(
           `http://localhost:8080/api/notifications/receiver/${id}`
         );
-        console.log(response.data);
 
         // Filter notifications based on the role and id
         const filteredNotifications = response.data.filter((notif) => {
@@ -38,7 +38,7 @@ const Notification = ({ role, id, name }) => {
         setLoading(false);
         console.log(notifications);
       } catch (err) {
-        setError("Failed to load notifications.");
+        alert("Failed to load notifications.");
         setLoading(false);
       }
     };
@@ -48,7 +48,7 @@ const Notification = ({ role, id, name }) => {
 
   const handleSendNotification = async () => {
     if (!message || !receiverId) {
-      setNotificationStatus("Please fill in all fields.");
+      showAlert("info", "Please fill in all fields.");
       return;
     }
 
@@ -59,7 +59,7 @@ const Notification = ({ role, id, name }) => {
         senderName: name,
         message,
         receiverId,
-        receiverRole: role === "citizen" ? "police" : "citizen", // Set receiver role based on sender
+        receiverRole: role === "citizen" ? "police" : "citizen",
       };
 
       const response = await axios.post(
@@ -67,14 +67,14 @@ const Notification = ({ role, id, name }) => {
         payload
       );
       if (response.status === 200) {
-        setNotificationStatus("Notification sent successfully!");
-        setNotifications((prev) => [...prev, response.data]); // Add the new notification to the state
+        showAlert("success", "Notification sent successfully!");
+        setNotifications((prev) => [...prev, response.data]);
         setShowModal(false);
       } else {
-        setNotificationStatus("Failed to send notification.");
+        showAlert("error", "Failed to send notification.");
       }
     } catch (error) {
-      setNotificationStatus("Error sending notification.");
+      showAlert("error", "Error sending notification." + error);
     }
 
     // Reset fields
@@ -98,9 +98,7 @@ const Notification = ({ role, id, name }) => {
         {loading && (
           <p className="text-center text-gray-500">Loading notifications...</p>
         )}
-        {error && <p className="text-center text-red-500">{error}</p>}
 
-        {/* Notifications List */}
         {!loading && notifications.length === 0 && (
           <p className="text-center text-gray-500">No notifications to show.</p>
         )}
@@ -119,7 +117,7 @@ const Notification = ({ role, id, name }) => {
                 </span>
               </div>
               <p className="text-sm">
-                From: {notif.senderName}
+                From: {notif.senderId} ({notif.senderRole.toUpperCase()})
               </p>
             </div>
           ))}
@@ -183,11 +181,6 @@ const Notification = ({ role, id, name }) => {
                   Send
                 </button>
               </div>
-              {notificationStatus && (
-                <p className="mt-4 text-center text-lg text-green-500">
-                  {notificationStatus}
-                </p>
-              )}
             </div>
           </div>
         )}

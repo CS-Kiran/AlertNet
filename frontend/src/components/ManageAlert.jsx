@@ -36,7 +36,6 @@ const ManageAlert = () => {
           "http://localhost:8080/api/alerts/all"
         );
         setAlerts(response.data);
-        console.log(response.data);
       } catch (err) {
         setError(err.response ? err.response.data : err.message);
       } finally {

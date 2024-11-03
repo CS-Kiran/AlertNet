@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import EditProfile from "./EditProfile"; // Adjust the import path as necessary
-import axios from "axios"; // Make sure to import axios if you haven't already
+import EditProfile from "./EditProfile";
+import axios from "axios";
+
 
 const Profile = ({ role, userDetails, onEditProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [userData, setUserData] = useState(userDetails); // State to hold user details
+  const [userData, setUserData] = useState(userDetails);
 
   const fetchUserDetails = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/api/${role}/${userDetails.id}`);
-      setUserData(response.data); // Update state with fetched user details
+      setUserData(response.data);
     } catch (error) {
       console.error("Error fetching user details:", error);
     }
@@ -17,9 +18,9 @@ const Profile = ({ role, userDetails, onEditProfile }) => {
 
   useEffect(() => {
     if (isEditing) {
-      fetchUserDetails(); // Fetch user details when editing starts
+      fetchUserDetails();
     }
-  }, [isEditing]); // Dependency array includes isEditing
+  }, [isEditing]);
 
   const handleEditProfile = () => {
     setIsEditing(true);
@@ -27,7 +28,7 @@ const Profile = ({ role, userDetails, onEditProfile }) => {
 
   const handleUpdateProfile = () => {
     setIsEditing(false);
-    fetchUserDetails(); // Refetch user details after update
+    fetchUserDetails();
   };
 
   const handleCancelEdit = () => {
@@ -39,7 +40,7 @@ const Profile = ({ role, userDetails, onEditProfile }) => {
       {isEditing ? (
         <EditProfile
           role={role}
-          userDetails={userData} // Pass updated user data to EditProfile
+          userDetails={userData}
           onCancel={handleCancelEdit}
           onUpdate={handleUpdateProfile}
         />

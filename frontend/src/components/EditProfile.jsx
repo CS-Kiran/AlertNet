@@ -1,7 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
+import { useAlert } from "../context/AlertContext";
+
 
 const EditProfile = ({ role, userDetails, onCancel, onUpdate }) => {
+  const { showAlert } = useAlert();
   const [formData, setFormData] = useState({
     phone: userDetails.phone,
     address: userDetails.address,
@@ -24,16 +27,14 @@ const EditProfile = ({ role, userDetails, onCancel, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Construct the API endpoint based on the user role
       const response = await axios.put(
         `http://localhost:8080/api/${role}/update/${userDetails.id}`,
         formData
       );
-      console.log("Profile updated:", response.data);
-      onUpdate(); // Call the update callback to refresh the profile or show a success message
+      showAlert("success", "Profile updated successfully!");
+      onUpdate();
     } catch (error) {
-      console.error("Error updating profile:", error);
-      // Optionally, you can display an error message to the user
+      showAlert("error", "Error updating profile" + error);
     }
   };
   

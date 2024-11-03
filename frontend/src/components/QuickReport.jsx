@@ -2,20 +2,23 @@ import { useState } from "react";
 import axios from "axios";
 import { MdClose } from "react-icons/md";
 import LocationSelector from "../utility/LocationSelector";
+import { useAlert } from "../context/AlertContext";
+
 
 const QuickReport = ({ onClose }) => {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [reporterName, setReporterName] = useState("");
   const [image, setImage] = useState(null);
-  const [lastSeenLocation, setLastSeenLocation] = useState(""); // Track manual location
+  const [lastSeenLocation, setLastSeenLocation] = useState("");
+  const { showAlert } = useAlert();
 
-  // Function to update location when selected from LocationSelector
+
   const handleLocationSelect = (location) => {
     const [lat, lng] = location.split(",").map((coord) => coord.trim());
     setLatitude(lat);
     setLongitude(lng);
-    setLastSeenLocation(location); // Update lastSeenLocation
+    setLastSeenLocation(location);
   };
 
   const handleReportSubmit = async () => {
@@ -34,10 +37,10 @@ const QuickReport = ({ onClose }) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      alert("Report submitted successfully!");
+      showAlert("success", "Report submitted successfully!");
       onClose();
     } catch (error) {
-      alert("Failed to submit report: " + error.message);
+      showAlert("error", "Failed to submit report"+error);
     }
   };
 

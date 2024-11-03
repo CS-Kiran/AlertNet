@@ -214,7 +214,7 @@ const Reports = () => {
         </div>
       )}
 
-      {/* Detail Modal for Citizen or Alert Details */}
+      {/* Detail Modal for Alert Details */}
       <DetailModal
         isOpen={showDetailModal}
         onClose={handleCloseDetailModal}

@@ -51,11 +51,11 @@ const ViewAlerts = () => {
     if (alert.type.toLowerCase() === "wanted") {
       switch (alert.dangerLevel) {
         case "low":
-          return " border-r-2 border-t-2 border-green-500";
+          return "border-t-4 border-green-500";
         case "medium":
-          return " border-r-2 border-t-2 border-yellow-500";
+          return "border-t-4 border-yellow-500";
         case "high":
-          return " border-r-2 border-t-2 border-red-500";
+          return "border-t-4 border-red-500";
         default:
           return "";
       }
