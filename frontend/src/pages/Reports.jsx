@@ -13,7 +13,6 @@ const Reports = () => {
 
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
-  const [policeId, setPoliceId] = useState(police_Id);
   const [isFiltered, setIsFiltered] = useState(false);
   const [showQuickReportsModal, setShowQuickReportsModal] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -21,6 +20,7 @@ const Reports = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedDetails, setSelectedDetails] = useState({});
+  const [selectedCitizenDetails, setSelectedCitizenDetails] = useState({});
   const [modalTitle, setModalTitle] = useState("");
 
   const handleViewQuickReports = () => {
@@ -45,7 +45,7 @@ const Reports = () => {
         }
         return 0;
       });
-  
+
       setReports(sortedReports);
       setFilteredReports(sortedReports);
     } catch (error) {
@@ -57,7 +57,7 @@ const Reports = () => {
     setIsFiltered(!isFiltered);
     if (!isFiltered) {
       setFilteredReports(
-        reports.filter((report) => report.police.id === policeId)
+        reports.filter((report) => report.police.id === police_Id)
       );
     } else {
       setFilteredReports(reports);
@@ -97,16 +97,13 @@ const Reports = () => {
     }
   };
 
-  const handleOpenDetailModal = (report) => {
-    if (report.alert) {
-      setSelectedDetails(report.alert);
+  const handleOpenDetailModal = (report, type) => {
+    if (type === "alert") {
+      setSelectedDetails(report.alert || {});
       setModalTitle("Alert Details");
-    } else if (report.citizen) {
-      setSelectedDetails(report.citizen);
+    } else if (type === "citizen") {
+      setSelectedCitizenDetails(report.citizen || {});
       setModalTitle("Citizen Details");
-    } else {
-      console.error("No details available for this report.");
-      return; // Exit if no valid details are found
     }
     setShowDetailModal(true);
   };
@@ -114,6 +111,7 @@ const Reports = () => {
   const handleCloseDetailModal = () => {
     setShowDetailModal(false);
     setSelectedDetails({});
+    setSelectedCitizenDetails({});
   };
 
   return (
@@ -148,25 +146,36 @@ const Reports = () => {
         <table className="min-w-full bg-white border border-gray-300">
           <thead className="bg-blue-600 text-white">
             <tr>
-              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">Alert ID</th>
-              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">Citizen ID</th>
-              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">Message</th>
-              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">Images</th>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">
+                Alert ID
+              </th>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">
+                Citizen ID
+              </th>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">
+                Message
+              </th>
+              <th className="py-3 px-5 text-center border-b-2 border-gray-300 font-semibold uppercase tracking-wider">
+                Images
+              </th>
             </tr>
           </thead>
           <tbody>
             {filteredReports.map((report) => (
-              <tr key={report.id} className="hover:bg-gray-100 border-b border-gray-300 text-center font-normal">
+              <tr
+                key={report.id}
+                className="hover:bg-gray-100 border-b border-gray-300 text-center font-normal"
+              >
                 <td className="py-2 border-b text-center cursor-pointer">
                   <p
-                    onClick={() => handleOpenDetailModal(report)} // Pass the entire report object
+                    onClick={() => handleOpenDetailModal(report,"alert")}
                   >
                     {report.alert.alertId}
                   </p>
                 </td>
                 <td className="py-2 border-b text-center cursor-pointer">
                   <p
-                    onClick={() => handleOpenDetailModal(report)} // Pass the entire report object
+                    onClick={() => handleOpenDetailModal(report,"citizen")} 
                   >
                     {report.citizen.id}
                   </p>
@@ -227,6 +236,7 @@ const Reports = () => {
         onClose={handleCloseDetailModal}
         title={modalTitle}
         details={selectedDetails}
+        citizenDetails={selectedCitizenDetails}
       />
     </div>
   );
