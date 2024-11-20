@@ -336,20 +336,6 @@ const BroadcastAlert = () => {
                       <option value="other">Other</option>
                     </select>
                   </div>
-
-                  <div>
-                    <label className="block text-gray-600 font-medium">
-                      Distinctive Features
-                    </label>
-                    <textarea
-                      name="distinctiveFeatures"
-                      value={formData.distinctiveFeatures}
-                      onChange={handleInputChange}
-                      rows="3"
-                      placeholder="Scars, tattoos, etc."
-                      className="w-full border border-gray-300 p-2 rounded-lg"
-                    />
-                  </div>
                 </div>
               </>
             )}
