@@ -25,7 +25,7 @@ public class UserDetails {
     @Column(nullable = false)
     private String address;
     
-    @Column(name = "account_status", nullable = false, columnDefinition = "varchar(255) default 'activated' ")
+    @Column(name = "account_status", columnDefinition = "varchar(255) default 'activated' ")
     private String accountStatus;
 
     // Constructors
