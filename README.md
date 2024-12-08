@@ -2,6 +2,8 @@
 
 **AlertNet** is a comprehensive web application designed to enhance public safety by enabling real-time communication between citizens, police, and administrators. The platform supports broadcasting alerts for emergencies, reporting suspicious activities, and managing user activities effectively.
 
+![Alt text](./frontend/public/AlertNet_HomePage.png)
+
 ### **Table of Contents**
 
 1.  Features
