@@ -69,7 +69,7 @@ const Sidebar = ({ role }) => {
         <button
           onClick={handleLogout}
           aria-label="Logout"
-          className="w-full flex items-center justify-center px-6 py-3 font-semibold text-lg rounded-full transition-all bg-white hover:scale-105 duration-300 shadow-lg text-gray-800"
+          className="w-full flex items-center justify-center px-6 py-3 font-semibold text-lg rounded-full transition-all bg-white hover:scale-105 hover:bg-red-700 hover:text-slate-50 duration-300 shadow-lg text-gray-800"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

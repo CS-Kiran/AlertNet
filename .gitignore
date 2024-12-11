@@ -2,3 +2,6 @@
 .vscode
 .metadata
 cmd.txt
+
+#server files {not necessary}
+Servers/*

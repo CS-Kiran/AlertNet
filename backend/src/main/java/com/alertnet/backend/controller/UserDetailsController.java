@@ -24,6 +24,9 @@ public class UserDetailsController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserDetails userDetails) {
+    	if(userDetails.getAccountStatus() == null) {
+    		userDetails.setAccountStatus("activated");
+    	}
         userDetailsService.saveUser(userDetails);
         return ResponseEntity.ok("User registered successfully");
     }
