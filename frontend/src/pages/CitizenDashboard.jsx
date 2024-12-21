@@ -49,10 +49,6 @@ export default function CitizenDashboard() {
     fetchUserDetails();
   }, [token]);
 
-  const handleEditProfile = () => {
-    console.log("Edit Profile clicked");
-    // Add logic to handle profile editing, maybe navigate to an edit page
-  };
 
   if (loading) {
     return <div>Loading user details...</div>; // Display loading state
@@ -73,7 +69,6 @@ export default function CitizenDashboard() {
               <Profile
                 role={"citizens"}
                 userDetails={userDetails}
-                onEditProfile={handleEditProfile}
               />
             }
           />

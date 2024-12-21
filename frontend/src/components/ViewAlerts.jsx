@@ -100,7 +100,7 @@ const ViewAlerts = () => {
           Quick Report {" >>"}
         </button>
       </div>
-
+      
       <div className="flex justify-center mb-10 space-x-4">
         {["missing", "wanted"].map((type) => (
           <button

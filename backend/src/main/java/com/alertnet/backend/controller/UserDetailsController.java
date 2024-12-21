@@ -6,6 +6,7 @@ import com.alertnet.backend.service.UserDetailsService;
 import com.alertnet.backend.util.JwtUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -98,6 +99,46 @@ public class UserDetailsController {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating police details: " + e.getMessage());
+        }
+    }
+    
+    @PutMapping("/activate/{id}")
+    public ResponseEntity<String> activateCitizen(@PathVariable Long id) {
+        try {
+            boolean isUpdated = userDetailsService.updateAccountStatus(id, "activated");
+            if (isUpdated) {
+                return ResponseEntity.ok("Citizen account activated successfully!");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Citizen not found with ID: " + id);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error activating account: " + e.getMessage());
+        }
+    }
+
+    // API to suspend a citizen's account
+    @PutMapping("/suspend/{id}")
+    public ResponseEntity<String> suspendCitizen(@PathVariable Long id) {
+        try {
+            boolean isUpdated = userDetailsService.updateAccountStatus(id, "suspended");
+            if (isUpdated) {
+                return ResponseEntity.ok("Citizen account suspended successfully!");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Citizen not found with ID: " + id);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error suspending account: " + e.getMessage());
+        }
+    }
+    
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDetails>> getAllCitizens() {
+        try {
+            List<UserDetails> citizens = userDetailsService.findAllUsers();
+            return ResponseEntity.ok(citizens);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
     }
 

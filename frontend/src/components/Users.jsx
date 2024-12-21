@@ -109,7 +109,7 @@ const suspendPolice = async () => {
     <div className="bg-gray-100 flex min-h-full">
       <div className="min-w-6xl w-full bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-3xl font-bold text-center mb-6 text-blue-700">
-          User Details
+          Police Accounts
         </h1>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse rounded-lg overflow-hidden">
@@ -224,7 +224,7 @@ const suspendPolice = async () => {
             </p>
 
             <p
-              className={`py-2 px-4 rounded text-center ${
+              className={`py-2 mt-5 px-4 rounded text-center ${
                 selectedPolice.accountStatus === "in-review"
                   ? "bg-yellow-200 text-yellow-800"
                   : selectedPolice.accountStatus === "activated"

@@ -3,7 +3,7 @@ import EditProfile from "./EditProfile";
 import axios from "axios";
 
 
-const Profile = ({ role, userDetails, onEditProfile }) => {
+const Profile = ({ role, userDetails }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState(userDetails);
 
