@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const words = ["Safety", "Awareness", "Unity"];
 
 const colors = {
-  Safety: "bg-gradient-to-r from-green-400 to-blue-500",
+  Safety: "bg-gradient-to-r from-purple-500 to-purple-700",
   Awareness: "bg-gradient-to-r from-yellow-500 to-orange-500",
   Unity: "bg-gradient-to-r from-purple-500 to-pink-500",
 };

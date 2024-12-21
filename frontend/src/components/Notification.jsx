@@ -106,7 +106,7 @@ const Notification = ({ role, id, name }) => {
             <div
               key={notif.notificationId}
               className={`p-6 max-w-[35rem] border rounded-lg shadow-md ${
-                name === notif.senderName ? "bg-gradient-to-r from-gray-300 to-gray-200 text-gray-800" : "bg-gradient-to-r from-blue-600 to-blue-500 text-white ml-[10rem]"
+                name === notif.senderName ? "bg-gradient-to-r ml-[10rem] from-gray-300 to-gray-200 text-gray-800" : "bg-gradient-to-r from-blue-600 to-blue-500 text-white"
               }`}
             >
               <div className="flex justify-between items-center">

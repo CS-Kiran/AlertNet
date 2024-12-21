@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAlert } from "../context/AlertContext";
 import { decodeJwt } from "../utility/decodeJwt";
+import { useNavigate } from "react-router-dom";
 
 const BroadcastAlert = () => {
   const [formData, setFormData] = useState({
@@ -31,6 +32,7 @@ const BroadcastAlert = () => {
   const [step, setStep] = useState(1);
   const { showAlert } = useAlert();
   const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -91,6 +93,7 @@ const BroadcastAlert = () => {
       if (response.status === 200) {
         showAlert("success", "Alert sent successfully!");
         handleClear();
+        navigate('/police/manage-alerts');
       } else {
         showAlert("error", response.data.message || "Failed to send alert.");
       }
