@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAlert } from "../context/AlertContext";
 
 export default function CitizenRegistration() {
@@ -14,6 +14,7 @@ export default function CitizenRegistration() {
   });
   const [consentGiven, setConsentGiven] = useState(false);
   const { showAlert } = useAlert();
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -51,6 +52,9 @@ export default function CitizenRegistration() {
         console.log("User registered successfully");
         showAlert("success", "Registration successful!");
         handleClear();
+        setTimeout(() => {
+          navigate("/citizen/login");
+        },1500)
       } else {
         showAlert(
           "error",

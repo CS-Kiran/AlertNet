@@ -4,17 +4,22 @@ import com.alertnet.backend.model.Report;
 import com.alertnet.backend.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @RestController
 @RequestMapping("/api/reports")
@@ -71,16 +76,47 @@ public class ReportController {
     public ResponseEntity<?> getImages(@PathVariable Long reportId) {
         String imageDirectoryPath = uploadDir + File.separator + "reports" + File.separator + reportId;
         File directory = new File(imageDirectoryPath);
+
         if (!directory.exists() || !directory.isDirectory()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Directory not found");
         }
 
-        // Get all files in the directory
         File[] files = directory.listFiles();
-        if (files != null && files.length > 0) {
-            return ResponseEntity.ok(files);
-        } else {
+        if (files == null || files.length == 0) {
             return ResponseEntity.ok("No images found in the directory");
+        }
+
+        try {
+            File zipFile = File.createTempFile("report_" + reportId + "_images", ".zip");
+            
+            try (FileOutputStream fos = new FileOutputStream(zipFile);
+                 ZipOutputStream zos = new ZipOutputStream(fos)) {
+
+                for (File file : files) {
+                    try (FileInputStream fis = new FileInputStream(file)) {
+                        ZipEntry zipEntry = new ZipEntry(file.getName());
+                        zos.putNextEntry(zipEntry);
+
+                        byte[] buffer = new byte[1024];
+                        int len;
+                        while ((len = fis.read(buffer)) > 0) {
+                            zos.write(buffer, 0, len);
+                        }
+                        zos.closeEntry();
+                    }
+                }
+            }
+
+            // Prepare response
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(zipFile));
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + zipFile.getName())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentLength(zipFile.length())
+                    .body(resource);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating zip file");
         }
     }
 
