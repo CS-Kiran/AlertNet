@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "../context/AlertContext";
 
 export default function PoliceRegistration() {
@@ -26,6 +26,7 @@ export default function PoliceRegistration() {
 
 const [consentGiven, setConsentGiven] = useState(false);
 const { showAlert } = useAlert();
+const navigate = useNavigate();
 
 const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -93,11 +94,15 @@ const handleSubmit = async (e) => {
       console.log("User registered successfully");
       showAlert("success", "Registration request sent successfully!");
       handleClear();
+      setTimeout(() => {
+        navigate("/login")
+      },2000)
     } else {
       showAlert(
         "error",
         response.data.message || "Registration failed."
       );
+      handleClear();
     }
   } catch (error) {
     console.error("Error during registration", error);

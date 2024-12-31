@@ -31,40 +31,7 @@ export default function CitizenRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, email, password, confirmPassword, phone, address } = formData;
-
-    // Validations
-    if (!name || !email || !password || !confirmPassword || !phone || !address) {
-      showAlert("warning", "All fields are required.");
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      showAlert("error", "Invalid email format.");
-      return;
-    }
-
-    if (password.length < 6) {
-      showAlert("info", "Password must be at least 6 characters long.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      showAlert("warning", "Passwords do not match.");
-      return;
-    }
-
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(phone)) {
-      showAlert("warning", "Phone number must be 10 digits.");
-      return;
-    }
-
-    if (!consentGiven) {
-      showAlert("warning", "You must give consent to proceed.");
-      return;
-    }
+    const { name, email, password, phone, address } = formData;
 
     const userData = {
       name,
@@ -86,14 +53,16 @@ export default function CitizenRegistration() {
         showAlert("success", "Registration successful!");
         handleClear();
         setTimeout(() => {
-          navigate('/login');
-        }, 3000);
+          navigate("/login")
+        },2000);
+
       } else {
         showAlert(
           "error",
           response.data.message ||
             "Registration failed. Please check your credentials."
         );
+        handleClear();
       }
     } catch (error) {
       console.error("Error:", error);
@@ -199,7 +168,7 @@ export default function CitizenRegistration() {
               value={formData.password}
               onChange={handleInputChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-              placeholder="Atleast 7 characters"
+              placeholder="Enter your password"
               required
             />
           </div>

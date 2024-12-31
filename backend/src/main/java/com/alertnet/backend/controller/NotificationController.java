@@ -31,11 +31,12 @@ public class NotificationController {
     }
 
     @GetMapping("/receiver/{receiverId}")
-    public ResponseEntity<List<Notification>> getNotificationsByReceiverId(@PathVariable String receiverId) {
-        List<Notification> notifications = notificationService.getNotificationsByReceiverId(receiverId);
+    public ResponseEntity<List<Notification>> getNotificationsByReceiverOrSenderId(@PathVariable String receiverId) {
+        List<Notification> notifications = notificationService.getNotificationsByReceiverOrSenderId(receiverId);
         if (notifications.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(notifications);
     }
+
 }

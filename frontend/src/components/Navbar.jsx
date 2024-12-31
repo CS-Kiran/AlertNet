@@ -1,13 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const toBroadcast = () => {
+    navigate("/database");
+  }
   return (
     <>
       <div className="text-gray-700 mx-5">
         <nav className="p-4 font-semibold">
           <div className="container mx-auto flex justify-between items-center">
             {/* Logo and Title */}
-            <div className="flex items-center space-x-3 cursor-pointer p-2 text-3xl font-bold transition hover:scale-110">
+            <div onClick={toBroadcast} className="flex items-center space-x-3 cursor-pointer p-2 text-3xl font-bold transition hover:scale-110">
               <img
                 src="/alertNet.png"
                 alt="AlertNet Logo"
@@ -22,13 +27,7 @@ const Navbar = () => {
                 to="/database"
                 className="px-4 py-2 transition-all duration-500 hover:scale-105 hover:text-blue-700"
               >
-                Database
-              </Link>
-              <Link
-                to="/admin_login"
-                className="px-4 py-2 transition-all duration-500 hover:scale-105 hover:text-blue-700"
-              >
-                Admin
+                Broadcast&apos;s
               </Link>
               <Link
                 to="/login"

@@ -26,4 +26,9 @@ public class NotificationService {
     public Optional<Notification> getNotificationById(Long notificationId) {
         return notificationRepository.findById(notificationId);
     }
+    
+    public List<Notification> getNotificationsByReceiverOrSenderId(String userId) {
+        return notificationRepository.findByReceiverIdOrSenderId(userId, userId);
+    }
+
 }

@@ -105,7 +105,7 @@ const ManageAlert = () => {
   return (
     <div className="mx-auto">
       <h2 className="text-5xl font-bold text-center mb-10 text-blue-700">
-        Alert&apos;s
+        Manage Alert&apos;s
       </h2>
       <div className="flex justify-between items-center mb-6">
         {/* Filter Options */}
@@ -136,13 +136,13 @@ const ManageAlert = () => {
           </button>
         </div>
         <div>
-          <label className="mr-2 text-gray-700">Show My Alerts Only</label>
           <input
             type="checkbox"
             checked={showPoliceAlerts}
             onChange={toggleShowPoliceAlerts}
             className="toggle-checkbox"
           />
+          <label className="mx-2 text-gray-700">Show My Alert&apos;s Only</label>
         </div>
       </div>
 

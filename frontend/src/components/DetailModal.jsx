@@ -22,7 +22,7 @@ const DetailModal = ({ isOpen, onClose, title, details, citizenDetails }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center max-h-screen bg-gray-600 bg-opacity-75 z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-h-[95vh] overflow-y-auto relative max-w-lg w-full">
+      <div className="bg-white rounded-lg shadow-lg p-6 max-h-[95vh] overflow-y-auto relative">
         <MdClose
           className="absolute top-2 right-2 w-6 h-6 cursor-pointer text-gray-700"
           onClick={onClose}
@@ -60,8 +60,8 @@ const DetailModal = ({ isOpen, onClose, title, details, citizenDetails }) => {
 
           {/* Citizen Details Section */}
           {citizenDetails && Object.keys(citizenDetails).length > 0 && (
-            <div>
-              <h3 className="font-bold text-2xl text-green-600 mb-6">
+            <div className="min-w-xl w-full max-h-[95vh] overflow-y-auto relative">
+              <h3 className="font-bold text-2xl text-green-600 mb-2">
                 Citizen Details
               </h3>
               {Object.entries(citizenDetails)

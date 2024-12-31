@@ -120,7 +120,7 @@ const QuickReport = ({ onClose }) => {
           </button>
           <button
             onClick={onClose}
-            className="px-6 py-2 font-bold bg-gradient-to-r from-gray-400 to-gray-300 rounded-full hover:bg-gray-400"
+            className="px-6 py-2 text-gray-800 font-bold bg-gradient-to-r from-gray-400 to-gray-300 rounded-full hover:bg-gray-400"
           >
             Cancel
           </button>

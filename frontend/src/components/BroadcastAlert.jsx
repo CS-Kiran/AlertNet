@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAlert } from "../context/AlertContext";
 import { decodeJwt } from "../utility/decodeJwt";
+import { useNavigate } from "react-router-dom";
 
 const BroadcastAlert = () => {
   const [formData, setFormData] = useState({
@@ -31,6 +32,7 @@ const BroadcastAlert = () => {
   const [step, setStep] = useState(1);
   const { showAlert } = useAlert();
   const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -91,6 +93,7 @@ const BroadcastAlert = () => {
       if (response.status === 200) {
         showAlert("success", "Alert sent successfully!");
         handleClear();
+        navigate('/police/manage-alerts');
       } else {
         showAlert("error", response.data.message || "Failed to send alert.");
       }
@@ -335,6 +338,20 @@ const BroadcastAlert = () => {
                       <option value="white">White</option>
                       <option value="other">Other</option>
                     </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-600 font-medium">
+                      Distinctive Features
+                    </label>
+                    <textarea
+                      name="distinctiveFeatures"
+                      value={formData.distinctiveFeatures}
+                      onChange={handleInputChange}
+                      rows="3"
+                      placeholder="Scars, tattoos, etc."
+                      className="w-full border border-gray-300 p-2 rounded-lg"
+                    />
                   </div>
                 </div>
               </>
