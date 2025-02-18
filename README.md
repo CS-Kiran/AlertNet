@@ -118,9 +118,10 @@ AlertNet follows a modular architecture with the following components:
 
 #### **Steps**
 
-1.  git clone https://github.com/your-username/alertnet.gitcd alertnet
+1.  git clone https://github.com/CS-Kiran/AlertNet.git
+2.  cd alertnet
     
-2.  **Set up the backend**:
+3.  **Set up the backend**:
     
     *   cd backend
         
@@ -130,7 +131,7 @@ AlertNet follows a modular architecture with the following components:
         
     *   mvn spring-boot:run
         
-3.  **Set up the frontend**:
+4.  **Set up the frontend**:
     
     *   cd ../frontend
         
@@ -138,7 +139,7 @@ AlertNet follows a modular architecture with the following components:
         
     *   npm start
         
-4.  **Access the application**:
+5.  **Access the application**:
     
     *   Open [http://localhost:5173](http://localhost:5173) in your browser.
         
